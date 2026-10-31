@@ -1,0 +1,1610 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10172d">
+  <meta name="description" content="Play bite-sized English spelling, grammar, listening, reading, writing, and speaking challenges. Free demo, no account needed.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="EnglishLite — Make words your superpower">
+  <meta property="og:description" content="Try a free, no-account-needed English adventure on your phone or laptop.">
+  <title>EnglishLite — Make words your superpower</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap');
+
+    :root {
+      color-scheme: dark;
+      --ink: #f5f4ff;
+      --muted: #9da5c2;
+      --panel: #1b2340;
+      --panel-light: #222c4c;
+      --line: rgba(192, 202, 255, .12);
+      --purple: #a78bfa;
+      --mint: #7ce5c3;
+      --gold: #ffd76f;
+      --coral: #ff8291;
+      font-family: "DM Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: #10172d;
+      background-image: radial-gradient(ellipse at 75% -10%, rgba(114, 94, 195, .23), transparent 43%), radial-gradient(ellipse at 8% 75%, rgba(65, 144, 145, .10), transparent 42%);
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    .hidden { display: none !important; }
+    .app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar {
+      height: 74px; padding: 0 5.3%; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--line); background: rgba(16, 23, 45, .76); backdrop-filter: blur(14px);
+      position: sticky; top: 0; z-index: 5;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; font: 900 21px Nunito, sans-serif; letter-spacing: -.7px; }
+    .brand > span:last-child { color: #60a5fa; }
+    .brand-mark { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 12px; color: #141a32; background: var(--mint); font-size: 19px; box-shadow: 0 5px 16px #7ce5c333; }
+    .brand em { color: #f87171; font-style: normal; }
+    .top-actions, .stats { display: flex; align-items: center; gap: 12px; }
+    .download-app { padding:8px 11px;border:1px solid #9db8ff36;border-radius:11px;background:#a9c6ff0b;color:#dce7ff;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap; }
+    .download-app:hover { border-color:#9db8ff88;background:#a9c6ff16; }
+    #storage-status { max-width: 260px; margin: 0; color: var(--coral); font-size: 11px; line-height: 1.4; }
+    .stat-pill { display: flex; align-items: center; gap: 7px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.035); font-size: 13px; font-weight: 800; }
+    .stat-pill span { font-size: 16px; }
+    .reset-demo { color: var(--muted); font-size: 11px; white-space: nowrap; }
+    .avatar { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: #4a466f; border: 2px solid #8e87c3; }
+    .main { width: min(1110px, 90%); margin: 0 auto; padding: 40px 0 72px; flex: 1; }
+    .welcome-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 29px; }
+    .eyebrow { color: var(--mint); text-transform: uppercase; letter-spacing: 1.6px; font-weight: 800; font-size: 11px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font: 900 clamp(28px, 4vw, 37px) Nunito, sans-serif; letter-spacing: -1.2px; margin: 7px 0 4px; }
+    .subtitle { color: var(--muted); margin: 0; font-size: 14px; }
+    .streak { color: var(--gold); border: 1px solid #ffd76f38; background: #ffd76f0d; padding: 10px 14px; border-radius: 13px; font-size: 13px; font-weight: 800; white-space: nowrap; }
+    .hero {
+      position: relative; overflow: hidden; min-height: 227px; padding: 32px 38px; display: flex; align-items: center; justify-content: space-between;
+      border: 1px solid #b5a5ff2b; border-radius: 24px; background: linear-gradient(110deg, #393568 0%, #30325b 52%, #334b69 100%);
+      box-shadow: 0 18px 50px #090e222e; margin-bottom: 38px;
+    }
+    .hero:before { content:""; position:absolute; width:290px;height:290px;right:11%;top:-180px;border:1px solid #ffffff15;border-radius:50%;box-shadow:0 0 0 28px #ffffff08,0 0 0 57px #ffffff06; }
+    .hero-copy { position: relative; z-index: 1; max-width: 520px; }
+    .hero h2 { font: 900 25px Nunito,sans-serif; margin: 10px 0 8px; letter-spacing: -.5px; }
+    .hero p { color: #d3d4ed; font-size: 14px; line-height: 1.6; margin-bottom: 18px; max-width: 430px; }
+    .primary-btn, .secondary-btn, .text-btn, .choice, .icon-btn {
+      border: 0; cursor: pointer; transition: transform .16s ease, filter .16s ease, background .16s ease;
+    }
+    button:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    button:focus-visible, input:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+    .primary-btn { border-radius: 12px; background: var(--mint); color: #102b30; padding: 12px 17px; font-weight: 900; box-shadow: 0 5px 18px #7ce5c32e; }
+    .hero-art { position: relative; width: 180px; height: 156px; display: grid; place-items: center; flex: 0 0 180px; }
+    .hero-orb { position:absolute; width:140px;height:140px;border-radius:50%;background:#a78bfa22;border:1px solid #d5c9ff36; }
+    .hero-creature { position:relative; font-size:87px; filter: drop-shadow(0 10px 10px #12162b66); transform: rotate(-7deg); }
+    .spark { position:absolute; color:var(--gold); font-size:21px; }
+    .section-heading { display:flex;align-items:center;justify-content:space-between;margin-bottom:16px; }
+    .section-heading h2 { font: 900 20px Nunito,sans-serif; margin:0; letter-spacing:-.3px; }
+    .text-btn { color:var(--mint); background:transparent;font-size:13px;font-weight:800;padding:7px; }
+    .world-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:15px; }
+    .world-card { position:relative; overflow:hidden; min-height:178px; padding:19px; border:1px solid var(--line); border-radius:19px; background:linear-gradient(145deg,#222c4c,#1b2340 74%); text-align:left; cursor:pointer; }
+    .world-card:disabled { cursor:default; opacity:.64; }
+    .world-card:not(:disabled):hover { border-color:#a78bfa88; transform:translateY(-3px); }
+    .world-head { display:flex;align-items:center;justify-content:space-between;margin-bottom:13px; }
+    .world-icon { width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:#a78bfa20;font-size:24px; }
+    .world-state { font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--mint);font-weight:900; }
+    .world-card h3 { font:800 16px Nunito,sans-serif;margin:0 0 4px; }
+    .world-card p { margin:0 0 13px;color:var(--muted);font-size:12px; }
+    .progress-meta { display:flex;justify-content:space-between;color:#b9bfd7;font-size:10px;font-weight:700;margin-bottom:6px; }
+    .progress-track { height:6px;border-radius:8px;background:#ffffff14;overflow:hidden; }
+    .progress-fill { width:33%;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--purple),#7ce5c3); }
+    .locked-mark { position:absolute;right:17px;bottom:17px;font-size:15px;opacity:.7; }
+    .bottom-row { display:grid;grid-template-columns:1.15fr .85fr;gap:15px;margin-top:24px; }
+    .info-card { padding:19px 21px;border:1px solid var(--line);border-radius:17px;background:#1b2340; }
+    .info-title { display:flex;align-items:center;gap:9px;font:800 14px Nunito,sans-serif;margin-bottom:13px; }
+    .quest-line { display:flex;align-items:center;justify-content:space-between;gap:12px;color:#c5cbe0;font-size:12px; }
+    .quest-line strong { color:var(--gold); }
+    .quest-progress { height:5px;margin-top:11px;background:#fff2;border-radius:5px;overflow:hidden; }
+    .quest-progress span { display:block;width:60%;height:100%;background:var(--gold);border-radius:5px; }
+    .tip { display:flex;gap:11px;color:#c5cbe0;font-size:12px;line-height:1.55; }
+    .tip-icon { font-size:20px; }
+    .tip p { margin:0; }
+    .skills-section { margin-top:35px; }
+    .skill-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:13px; }
+    .skill-card { min-height:149px;padding:17px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#222c4c,#1b2340 74%);text-align:left;cursor:pointer; }
+    .skill-card:hover { border-color:#7ce5c388;transform:translateY(-3px); }
+    .skill-card.completed { border-color:#7ce5c355;background:linear-gradient(145deg,#213e4b,#1b2d42); }
+    .skill-icon { font-size:25px;margin-bottom:12px; }
+    .skill-card h3 { font:800 15px Nunito,sans-serif;margin:0 0 4px; }
+    .skill-card p { color:var(--muted);font-size:11px;margin:0;line-height:1.5; }
+    .skill-status { display:block;margin-top:12px;color:var(--mint);font-size:9px;font-weight:900;letter-spacing:.7px;text-transform:uppercase; }
+    .bonus-badge { display:flex;align-items:center;gap:15px;margin-top:17px;padding:15px 18px;border:1px solid #ffd76f36;border-radius:16px;background:linear-gradient(100deg,#ffd76f0d,#a78bfa0c); }
+    .badge-icon { width:43px;height:43px;display:grid;place-items:center;flex:0 0 43px;border-radius:50%;background:#ffd76f20;font-size:23px;filter:grayscale(1);opacity:.55; }
+    .bonus-badge.unlocked .badge-icon { filter:none;opacity:1;box-shadow:0 0 20px #ffd76f32; }
+    .badge-copy { flex:1; }
+    .badge-copy strong { display:block;font:800 13px Nunito,sans-serif;margin-bottom:3px; }
+    .badge-copy span { color:var(--muted);font-size:10px; }
+    .badge-progress { color:var(--gold);font-size:10px;font-weight:900;white-space:nowrap; }
+
+    .auth-view { width:min(440px,90%);margin:auto;padding:45px 0 70px; }
+    .auth-card { border:1px solid var(--line);border-radius:23px;background:#1b2340;padding:34px;box-shadow:0 25px 70px #080c1d66; }
+    .auth-top { text-align:center;margin-bottom:26px; }
+    .auth-top .brand-mark { margin:0 auto 15px;width:50px;height:50px;border-radius:16px;font-size:24px; }
+    .auth-top h1 { font-size:29px; }
+    .auth-top p { color:var(--muted);font-size:13px;margin:6px 0 0; }
+    .field { margin-bottom:15px; }
+    .field label { display:block;margin-bottom:7px;color:#d4d8e9;font-size:12px;font-weight:800; }
+    .field input { width:100%;height:45px;border:1px solid #ffffff20;border-radius:11px;background:#11182f;color:var(--ink);padding:0 13px; }
+    .auth-submit { width:100%;height:46px;margin:7px 0 13px; }
+    .auth-note { text-align:center;color:var(--muted);font-size:11px;line-height:1.55;margin:5px 0 0; }
+    .secondary-btn { display:block;width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;background:#ffffff08;font-size:12px;font-weight:800; }
+
+    .skill-wrap { max-width:760px;margin:0 auto; }
+    .skill-panel { padding:26px 28px 29px;border:1px solid var(--line);border-radius:21px;background:#1b2340;box-shadow:0 20px 55px #080c1d55; }
+    .skill-panel h1 { font-size:25px;margin:7px 0; }
+    .skill-panel > p { color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:21px; }
+    .skill-progress-meta { display:flex;justify-content:space-between;color:#b9bfd7;font-size:10px;font-weight:800;margin:18px 0 7px; }
+    .skill-progress-track { height:6px;border-radius:8px;background:#ffffff14;overflow:hidden; }
+    .skill-progress-fill { height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,var(--purple),var(--mint));transition:width .25s ease; }
+    .cefr-level { display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid #a78bfa55;border-radius:9px;background:#a78bfa18;color:#e3ddff;font-size:10px;font-weight:900;letter-spacing:.6px; }
+    .cefr-level strong { color:var(--mint);font-size:12px; }
+    .skill-level-note { margin:9px 0 14px;color:var(--muted);font-size:11px; }
+    .skill-prompt { padding:17px;border:1px solid #a78bfa30;border-radius:13px;background:#a78bfa0b;color:#e4e4f6;font-size:15px;line-height:1.65;margin-bottom:17px; }
+    .skill-prompt small { display:block;color:var(--mint);font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px; }
+    .skill-options { display:grid;grid-template-columns:repeat(2,1fr);gap:10px; }
+    .skill-option { padding:12px;border:1px solid var(--line);border-radius:11px;background:#ffffff08;text-align:left;cursor:pointer;font-size:12px; }
+    .skill-option:hover { border-color:var(--purple); }
+    .skill-panel .field { max-width:520px; }
+    .skill-panel .field input { height:47px; }
+    .skill-message { min-height:22px;margin:13px 0 0;text-align:center;font-size:12px;font-weight:800; }
+    .skill-message.good { color:var(--mint); }
+    .skill-message.bad { color:var(--coral); }
+    .record-controls { display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:15px 0; }
+    .record-btn { border:1px solid #ff829155;border-radius:11px;background:#ff82911a;color:#ffdce0;padding:11px 16px;font-weight:800;cursor:pointer; }
+    .record-btn.stop { border-color:#ffffff30;background:#ffffff0b;color:var(--ink); }
+    .record-status { text-align:center;color:var(--muted);font-size:11px;min-height:17px; }
+    .recording-dot { display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;background:var(--coral);animation:pulse 1s infinite; }
+    @keyframes pulse { 50% { opacity:.35; } }
+    .voice-playback { display:block;width:min(420px,100%);height:40px;margin:14px auto; }
+    .analysis-consent { max-width:540px;margin:15px auto;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:#ffffff06;color:#c5cbe0;font-size:10px;line-height:1.55; }
+    .analysis-consent label { display:flex;align-items:flex-start;gap:9px;cursor:pointer; }
+    .analysis-consent input { flex:0 0 auto;margin:2px 0 0;accent-color:var(--mint); }
+    .speech-transcript { display:none;margin:12px auto;padding:12px 14px;max-width:540px;border-radius:11px;background:#11182f;color:#d9def0;font-size:12px;line-height:1.6; }
+    .speech-feedback { max-width:540px;margin:16px auto 0;padding:16px;border:1px solid #7ce5c344;border-radius:14px;background:#7ce5c30a;text-align:left; }
+    .speech-feedback h3 { margin:0 0 5px;font:800 15px Nunito,sans-serif; }
+    .speech-feedback-intro { color:var(--muted);font-size:10px;line-height:1.5;margin:0 0 12px; }
+    .feedback-item { padding:9px 0;border-top:1px solid var(--line); }
+    .feedback-item strong { display:block;color:var(--mint);font-size:10px;margin-bottom:3px; }
+    .feedback-item span { display:block;color:#d1d6e8;font-size:11px;line-height:1.5; }
+    .manual-transcript { margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:11px;background:#ffffff06; }
+    .manual-transcript label { display:block;margin-bottom:7px;color:#d4d8e9;font-size:11px;font-weight:800; }
+    .manual-transcript textarea { width:100%;min-height:84px;resize:vertical;border:1px solid #ffffff20;border-radius:10px;background:#11182f;color:var(--ink);padding:10px;font:inherit;font-size:12px;line-height:1.5; }
+    .manual-transcript button { display:block;margin:10px auto 0; }
+    .manual-transcript-note { color:var(--muted);font-size:10px;line-height:1.5;margin:0 0 11px; }
+    .feedback-results { margin-top:12px; }
+    .skill-action { display:block;min-width:190px;margin:17px auto 0; }
+    .skill-helper { margin-top:16px !important;text-align:center;font-size:10px !important; }
+
+    .battle-wrap { max-width:760px;margin:0 auto; }
+    .battle-nav { display:flex;align-items:center;justify-content:space-between;margin-bottom:23px; }
+    .back-btn { background:transparent;border:0;color:#bfc6dc;cursor:pointer;font-size:13px;font-weight:800; }
+    .battle-label { color:var(--muted);font-size:12px;font-weight:800; }
+    .battle-progress { height:7px;background:#ffffff15;border-radius:9px;margin:0 0 27px;overflow:hidden; }
+    .battle-progress div { width:33%;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--purple),var(--mint));transition:width .25s ease; }
+    .battle-card { overflow:hidden;border:1px solid var(--line);border-radius:23px;background:#1b2340;box-shadow:0 20px 55px #080c1d55; }
+    .arena { position:relative;min-height:218px;display:flex;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(ellipse at 50% 120%,#7560bd44,transparent 58%),linear-gradient(135deg,#242548,#293458);border-bottom:1px solid var(--line); }
+    .arena:before { content:"";position:absolute;inset:auto 0 0;height:1px;background:#c4b5fd2e; }
+    .arena-world { position:absolute;top:17px;left:20px;color:#c4c8dd;font-size:10px;text-transform:uppercase;letter-spacing:1.4px;font-weight:900; }
+    .monster { font-size:76px;line-height:1;filter:drop-shadow(0 12px 10px #11152d88);animation:float 3s ease-in-out infinite; }
+    @keyframes float { 50% { transform:translateY(-7px) rotate(3deg); } }
+    .monster-name { margin-top:10px;font:900 12px Nunito,sans-serif;color:#d9d3ff;letter-spacing:.5px; }
+    .battle-content { padding:25px 28px 28px; }
+    .question-kicker { text-align:center;color:var(--mint);font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px; }
+    .battle-content h2 { text-align:center;font:900 21px Nunito,sans-serif;margin:0 0 7px; }
+    .battle-hint { color:var(--muted);font-size:12px;text-align:center;margin:0 0 19px; }
+    .answer-input { display:block;width:min(450px,100%);height:48px;margin:0 auto 13px;padding:0 14px;border:1px solid #ffffff26;border-radius:12px;background:#11182f;color:var(--ink);text-align:center;font-size:15px; }
+    .answer-btn { display:block;width:min(450px,100%);margin:auto; }
+    .feedback { min-height:24px;margin:13px 0 0;text-align:center;font-size:13px;font-weight:800; }
+    .feedback.good { color:var(--mint); }
+    .feedback.bad { color:var(--coral); }
+    .battle-footer { display:flex;justify-content:center;gap:20px;color:#8f98b6;font-size:10px;margin-top:17px; }
+    .battle-footer strong { color:#d5daf0; }
+    .complete-card { text-align:center;padding:35px 20px; }
+    .complete-card .trophy { font-size:58px; }
+    .complete-card h2 { font:900 26px Nunito,sans-serif;margin:10px 0 7px; }
+    .complete-card p { color:var(--muted);font-size:13px;margin-bottom:18px; }
+    footer { padding:20px;text-align:center;color:#747d9e;font-size:10px; }
+
+    body {
+      overflow-x:hidden;
+      background-color:#080d20;
+      background-image:radial-gradient(ellipse at 50% -18%,#43388766,transparent 52%),radial-gradient(ellipse at 4% 58%,#156f8b22,transparent 36%),radial-gradient(ellipse at 96% 78%,#842f7930,transparent 35%),linear-gradient(180deg,#0b1024 0%,#10152c 54%,#0b1021 100%);
+    }
+    body:before {
+      content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+      background-image:radial-gradient(1px 1px at 7% 13%,#fff 98%,transparent),radial-gradient(1px 1px at 19% 73%,#c9ddff 98%,transparent),radial-gradient(1.5px 1.5px at 31% 28%,#fff 98%,transparent),radial-gradient(1px 1px at 43% 88%,#fff 98%,transparent),radial-gradient(1px 1px at 57% 12%,#c9ddff 98%,transparent),radial-gradient(1.5px 1.5px at 68% 63%,#fff 98%,transparent),radial-gradient(1px 1px at 79% 34%,#fff 98%,transparent),radial-gradient(1px 1px at 92% 18%,#c9ddff 98%,transparent),radial-gradient(1px 1px at 88% 83%,#fff 98%,transparent);
+      background-size:380px 320px;
+    }
+    .app-shell { position:relative;z-index:1; }
+    .topbar { background:rgba(7,11,29,.76);border-bottom-color:#aab8ff20;box-shadow:0 10px 34px #03071433; }
+    .brand-mark { background:linear-gradient(145deg,#8de7ff,#8ca4ff 58%,#d19cff);box-shadow:0 0 24px #78a8ff55; }
+    .stat-pill { background:linear-gradient(145deg,#1d2545dd,#111831dd);border-color:#b9c9ff24;box-shadow:inset 0 1px #ffffff08; }
+    .avatar { background:linear-gradient(145deg,#334c7b,#674d8d);border-color:#af9dff;box-shadow:0 0 18px #9b8cff38; }
+    .main { position:relative; }
+    .welcome-row { position:relative; }
+    .welcome-row:after { content:"✦";position:absolute;top:-16px;right:28%;color:#e6d3ff99;font-size:15px;text-shadow:0 0 14px #caaaff; }
+    .hero {
+      border-color:#c8b9ff40;
+      background:radial-gradient(ellipse at 76% 50%,#7758b855,transparent 37%),linear-gradient(112deg,#191c43 0%,#302857 48%,#183e59 100%);
+      box-shadow:0 22px 65px #03061766,inset 0 1px #ffffff16;
+    }
+    .hero:before { width:330px;height:330px;right:8%;top:-150px;border-color:#c4caff30;box-shadow:0 0 0 25px #b6a2ff0a,0 0 0 54px #b6a2ff08,0 0 0 84px #b6a2ff06; }
+    .hero:after { content:"";position:absolute;width:18px;height:18px;right:23%;top:33px;border-radius:50%;background:#ffe79e;box-shadow:0 0 24px 8px #fbc87866; }
+    .hero-orb { background:radial-gradient(circle at 34% 30%,#f4c4ff,#a78bfa 35%,#5752aa 68%,#252957);box-shadow:inset -16px -12px 30px #16183d88,0 0 35px #ae8cff66;border:0; }
+    .hero-art:after { content:"";position:absolute;width:174px;height:54px;border:2px solid #a9d8ff75;border-radius:50%;transform:rotate(-24deg);box-shadow:0 0 18px #93baff30; }
+    .hero-creature { z-index:1; }
+    .primary-btn { background:linear-gradient(110deg,#8ee9dc,#a5d8ff);box-shadow:0 5px 22px #73d7e344,inset 0 1px #ffffff88; }
+    .world-card,.skill-card,.info-card {
+      isolation:isolate;overflow:hidden;
+      border-color:#c3cbff23;
+      box-shadow:0 14px 34px #04081755,inset 0 1px #ffffff0a;
+    }
+    .world-card:after,.skill-card:after {
+      content:"";position:absolute;z-index:-1;right:-34px;top:-43px;width:132px;height:132px;border-radius:50%;
+      background:radial-gradient(circle at 31% 29%,#ffffff66,#ffffff0d 44%,transparent 72%);
+      border:1px solid #ffffff20;box-shadow:inset -12px -10px 24px #050a1d44,0 0 32px var(--planet-glow,#a78bfa22);
+      pointer-events:none;transition:transform .35s ease;
+    }
+    .world-card:hover:after,.skill-card:hover:after { transform:scale(1.13) rotate(12deg); }
+    .world-card { background:linear-gradient(145deg,#152f3b,#14263a 72%,#151c35);--planet-glow:#54dfc755; }
+    .world-card:nth-child(2) { background:linear-gradient(145deg,#29214d,#202645 72%,#171c36);--planet-glow:#ad86ff77; }
+    .world-card:nth-child(2):after { background:radial-gradient(circle at 30% 28%,#ffe8b588,#ffb66c20 42%,#c14d8044 70%,transparent 73%); }
+    .world-card:nth-child(3) { background:linear-gradient(145deg,#163247,#14263d 72%,#171c36);--planet-glow:#4ecff877; }
+    .world-card:nth-child(3):after { background:radial-gradient(circle at 30% 25%,#bdffff88,#44c7dd22 42%,#4261b044 70%,transparent 73%); }
+    .world-card:nth-child(4) { background:linear-gradient(145deg,#42253c,#2c2344 72%,#171c36);--planet-glow:#ff927777; }
+    .world-card:nth-child(4):after { background:radial-gradient(circle at 30% 27%,#fff0b899,#ff9a6733 44%,#d34b7066 72%,transparent 74%); }
+    .world-icon { background:#a78bfa20;box-shadow:inset 0 0 18px #a78bfa14,0 0 18px #a78bfa18; }
+    .progress-track { background:#090e2099; }
+    .progress-fill { background:linear-gradient(90deg,#78aaff,#8ce8d7);box-shadow:0 0 12px #80dfff66; }
+    .skills-section { position:relative;padding:23px;border:1px solid #b7c5ff1c;border-radius:24px;background:linear-gradient(145deg,#0f1730aa,#17152baa);box-shadow:0 20px 55px #03061744,inset 0 1px #ffffff08; }
+    .skills-section:before { content:"SKILL CONSTELLATION";position:absolute;right:22px;top:-8px;padding:0 8px;background:#11162c;color:#8da5d3;font-size:8px;font-weight:900;letter-spacing:1.6px; }
+    .skill-card { position:relative;background:linear-gradient(145deg,#152b4a,#17213c 72%,#151a33);--planet-glow:#63bdff66; }
+    .skill-card:nth-child(2) { background:linear-gradient(145deg,#133a3b,#172e3c 72%,#151a33);--planet-glow:#51e0b877; }
+    .skill-card:nth-child(2):after { background:radial-gradient(circle at 30% 27%,#d1ffbd88,#73df9b24 46%,#238a9b50 72%,transparent 74%); }
+    .skill-card:nth-child(3) { background:linear-gradient(145deg,#302452,#22203f 72%,#151a33);--planet-glow:#c18cff77; }
+    .skill-card:nth-child(3):after { background:radial-gradient(circle at 28% 25%,#ffb9cf99,#ce6bba33 44%,#7449bb66 72%,transparent 74%); }
+    .skill-card:nth-child(4) { background:linear-gradient(145deg,#452542,#2e2043 72%,#151a33);--planet-glow:#ff8e9f77; }
+    .skill-card:nth-child(4):after { background:radial-gradient(circle at 30% 26%,#ffe6ad99,#ff9b6933 44%,#ca525f66 72%,transparent 74%); }
+    .skill-card > * { position:relative;z-index:1; }
+    .skill-card.completed { background:linear-gradient(145deg,#17413e,#17333e 72%,#151a33); }
+    .bonus-badge { border-color:#f6d47744;background:linear-gradient(105deg,#56442620,#39295033,#12283a55);box-shadow:inset 0 1px #ffffff0c,0 10px 28px #05081544; }
+    .info-card { background:linear-gradient(145deg,#18213aee,#171d35ee); }
+    .auth-card,.skill-panel { background:linear-gradient(145deg,#171e39f5,#11182ff5);border-color:#b8c5ff30;box-shadow:0 25px 80px #02051588,inset 0 1px #ffffff0a; }
+    .auth-top .brand-mark { background:linear-gradient(145deg,#8de7ff,#8ca4ff 58%,#d19cff); }
+    #skill-view { --skill-accent:#76cfff;--skill-wash:#76cfff14;--skill-glow:#287dc12b;--skill-border:#76cfff50; }
+    #skill-view[data-skill="reading"] { --skill-accent:#72e6ba;--skill-wash:#72e6ba14;--skill-glow:#278f7330;--skill-border:#72e6ba50; }
+    #skill-view[data-skill="writing"] { --skill-accent:#d1a0ff;--skill-wash:#d1a0ff14;--skill-glow:#874bb733;--skill-border:#d1a0ff50; }
+    #skill-view[data-skill="speaking"] { --skill-accent:#ff9b9f;--skill-wash:#ff9b9f14;--skill-glow:#b84d6833;--skill-border:#ff9b9f50; }
+    #skill-view .skill-panel { background:radial-gradient(ellipse at 100% 0%,var(--skill-glow),transparent 40%),linear-gradient(145deg,#171e39f5,#11182ff5);border-color:var(--skill-border); }
+    #skill-view .skill-panel .eyebrow,#skill-view .skill-prompt small { color:var(--skill-accent); }
+    #skill-view .skill-progress-track { background:#090e2099; }
+    #skill-view .skill-progress-fill { background:linear-gradient(90deg,var(--skill-accent),#a9b5ff);box-shadow:0 0 12px var(--skill-glow); }
+    #skill-view .skill-prompt { border-color:var(--skill-accent);background:var(--skill-wash); }
+    #skill-view .cefr-level { border-color:var(--skill-accent);background:var(--skill-wash); }
+    footer { color:#98a1c0;text-shadow:0 0 18px #889dff33; }
+    @media (max-width:700px) {
+      .topbar { padding:9px 5%;height:auto;min-height:65px;flex-wrap:wrap;gap:7px 12px; }
+      .brand { flex:0 0 100%; }
+      .topbar > .top-actions { flex:0 0 100%;justify-content:space-between;gap:6px; }
+      .download-app { padding:7px 8px;font-size:10px; }
+      .topbar .stat-pill { padding:6px 8px;font-size:11px; }
+      .topbar .stats { gap:5px; }
+      .topbar .avatar { width:32px;height:32px; }
+      .main { padding-top:29px; }
+      .welcome-row { align-items:flex-start;flex-direction:column;gap:12px; }
+      .hero { padding:25px 23px;min-height:200px; }
+      .hero-art { width:115px;flex-basis:115px; }
+      .hero-orb { width:105px;height:105px; }
+      .hero-creature { font-size:66px; }
+      .hero h2 { font-size:21px; }
+      .world-grid { grid-template-columns:1fr; }
+      .world-card { min-height:162px; }
+      .bottom-row { grid-template-columns:1fr; }
+      .skill-grid { grid-template-columns:repeat(2,1fr); }
+      .skills-section { padding:18px; }
+      .stat-pill { padding:7px 9px; }
+      .stats { gap:6px; }
+    }
+    @media (min-width:701px) and (max-width:950px) {
+      .world-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:430px) {
+      .hero-art { display:none; }
+      .auth-card { padding:27px 22px; }
+      .battle-content { padding:23px 18px; }
+      .skill-grid { gap:9px; }
+      .skill-card { padding:14px;min-height:143px; }
+      .skill-panel { padding:23px 18px; }
+      .badge-progress { white-space:normal;text-align:right; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="EnglishLite home" onclick="showDashboard();return false">
+        <span class="brand-mark">✦</span><span>English<em>Lite</em></span>
+      </a>
+      <div class="top-actions">
+        <button id="return-action" class="back-btn hidden" type="button" aria-label="Return to the previous section">← Return</button>
+        <a id="download-app" class="download-app" href="./englishlite.html" download="EnglishLite.html">↓ Download app</a>
+        <p id="storage-status" class="hidden" role="status" aria-live="polite"></p>
+        <div id="player-actions" class="top-actions hidden">
+        <div class="stats">
+          <div class="stat-pill" title="Experience points"><span>✨</span><b id="xp-count">120</b></div>
+          <div class="stat-pill" title="Lives"><span>💚</span><b id="heart-count">5</b></div>
+        </div>
+        <button id="reset-demo" class="text-btn reset-demo" type="button">Reset demo</button>
+        <div class="avatar" aria-label="Player avatar">🧑‍🚀</div>
+        </div>
+      </div>
+    </header>
+
+    <main id="auth-view" class="auth-view">
+      <section class="auth-card" aria-labelledby="auth-heading">
+        <div class="auth-top">
+          <div class="brand-mark">✦</div>
+          <div class="eyebrow">No account needed</div>
+          <h1 id="auth-heading">Try EnglishLite</h1>
+          <p>Jump into a free demo and start leveling up your English.</p>
+        </div>
+        <button id="demo-login" class="primary-btn auth-submit" type="button">Start the free demo →</button>
+        <p class="auth-note">Your progress is saved only in this browser.</p>
+      </section>
+    </main>
+
+    <main id="dashboard-view" class="main hidden">
+      <section class="welcome-row">
+        <div><div class="eyebrow"><span id="adventure-date"></span> · Your adventure</div><h1>Ready to roll, <span id="player-name">word hero</span>? 👋</h1><p class="subtitle">A little practice today makes a big difference tomorrow.</p></div>
+        <div class="streak">🔥 &nbsp;<span id="streak-count">3</span> day streak</div>
+      </section>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Continue your journey</div>
+          <h2>The Wordwood is waiting!</h2>
+          <p>Spelling slimes are causing chaos in the forest. Sharpen your words and send them packing.</p>
+          <button id="continue-btn" class="primary-btn">Continue adventure &nbsp;→</button>
+        </div>
+        <div class="hero-art" aria-hidden="true"><div class="hero-orb"></div><span class="hero-creature">🧌</span><span class="spark" style="top:18px;right:17px">✦</span><span class="spark" style="bottom:16px;left:20px">✧</span></div>
+      </section>
+      <section aria-labelledby="worlds-heading">
+        <div class="section-heading"><h2 id="worlds-heading">Choose your world</h2><button class="text-btn" type="button" id="world-link">View all worlds ↗</button></div>
+        <div class="world-grid">
+          <button class="world-card" type="button" data-world="Wordwood Forest">
+            <div class="world-head"><span class="world-icon">🌲</span><span id="wordwood-world-state" class="world-state">● A1 unlocked</span></div>
+            <h3>Wordwood Forest</h3><p>Spelling · A1 beginner to C2 proficient</p>
+            <div class="progress-meta"><span>CEFR progress</span><span id="wordwood-progress-count">A1 · 0 / 13</span></div><div class="progress-track"><div id="wordwood-progress-fill" class="progress-fill" style="width:0%"></div></div>
+          </button>
+          <button class="world-card" type="button" data-world="Grammar Galaxy">
+            <div class="world-head"><span class="world-icon">🪐</span><span id="grammar-world-state" class="world-state">● A1 unlocked</span></div>
+            <h3>Grammar Galaxy</h3><p>Grammar · A1 beginner to C2 proficient</p>
+            <div class="progress-meta"><span>CEFR progress</span><span id="grammar-progress-count">A1 · 0 / 12</span></div><div class="progress-track"><div id="grammar-progress-fill" class="progress-fill" style="width:0%"></div></div>
+          </button>
+          <button class="world-card" type="button" disabled="">
+            <div class="world-head"><span class="world-icon">🌊</span><span class="world-state" style="color:#a1a7be">Coming soon</span></div>
+            <h3>Syntax Sea</h3><p>Sentence craft · Explorer</p><div class="progress-meta"><span>Unlock by leveling up</span><span>🔒</span></div><div class="locked-mark">🔒</div>
+          </button>
+          <button class="world-card" type="button" data-world="Monster Hunter Nebula">
+            <div class="world-head"><span class="world-icon">🏹</span><span class="world-state" id="hunter-world-state">● A1 unlocked</span></div>
+            <h3>Monster Hunter Nebula</h3><p>Word &amp; grammar hunts · A1 to C2 · Bonus XP</p>
+            <div class="progress-meta"><span>CEFR hunt progress</span><span id="hunter-progress-count">A1 · 0 / 12</span></div>
+            <div class="progress-track"><div id="hunter-progress-fill" class="progress-fill" style="width:0%"></div></div>
+          </button>
+        </div>
+      </section>
+      <section class="skills-section" aria-labelledby="skills-heading">
+        <div class="section-heading"><h2 id="skills-heading">Train every English skill</h2><span class="battle-label">Short, fun practice</span></div>
+        <div class="skill-grid">
+          <button class="skill-card" type="button" data-skill="listening">
+            <div class="skill-icon">🎧</div><h3>Listening</h3><p>30 audio challenges, from CEFR A1 beginner to C2 proficient.</p><span class="skill-status" id="listening-status">Start at A1 →</span>
+          </button>
+          <button class="skill-card" type="button" data-skill="reading">
+            <div class="skill-icon">📚</div><h3>Reading</h3><p>12 text challenges, progressing from CEFR A1 beginner to C2 proficient.</p><span class="skill-status" id="reading-status">Start at A1 →</span>
+          </button>
+          <button class="skill-card" type="button" data-skill="writing">
+            <div class="skill-icon">✍️</div><h3>Writing</h3><p>12 sentence challenges, progressing from CEFR A1 beginner to C2 proficient.</p><span class="skill-status" id="writing-status">Start at A1 →</span>
+          </button>
+          <button class="skill-card" type="button" data-skill="speaking">
+            <div class="skill-icon">🎙️</div><h3>Speaking</h3><p>12 recorded prompts, progressing from CEFR A1 beginner to C2 proficient.</p><span class="skill-status" id="speaking-status">Start at A1 →</span>
+          </button>
+        </div>
+        <div id="bonus-badge" class="bonus-badge" aria-live="polite">
+          <div class="badge-icon">🏅</div>
+          <div class="badge-copy"><strong id="badge-title">Bonus badge · Skill Star</strong><span id="badge-description">Complete all four skill practices to earn your badge.</span></div>
+          <div id="badge-progress" class="badge-progress">0 / 4 skills</div>
+        </div>
+      </section>
+      <section class="bottom-row">
+        <div class="info-card">
+          <div class="info-title"><span>🎯</span> Today's little quest</div>
+          <div class="quest-line"><span>Defeat 5 word monsters</span><strong><span id="quest-count">3</span> / 5</strong></div>
+          <div class="quest-progress"><span id="quest-bar" style="width: 60%;"></span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-title"><span>💡</span> Word wisdom</div>
+          <div class="tip"><span class="tip-icon">📖</span><p>Read it, say it, spell it! Connecting how a word looks and sounds helps it stick.</p></div>
+        </div>
+      </section>
+    </main>
+
+    <main id="skill-view" class="main hidden" data-skill="listening">
+      <div class="skill-wrap">
+        <div class="battle-nav"><button id="skill-back-btn" class="back-btn" type="button">← &nbsp; Return</button><span id="skill-nav-label" class="battle-label">LISTENING PRACTICE</span></div>
+        <section class="skill-panel" aria-live="polite">
+          <div id="skill-content"><div class="eyebrow">listening practice</div><h1>Listening journey · A1 to C2</h1><p>Build your listening skills step by step. Complete five audio exercises to unlock the next CEFR level.</p><div class="skill-progress-meta"><span id="skill-exercise-count">A1 · Exercise 1 of 5</span><span id="skill-exercise-score">+5 XP per exercise</span></div><div class="skill-progress-track"><div id="skill-progress-fill" class="skill-progress-fill" style="width: 0%;"></div></div><div id="cefr-level" class="cefr-level"><strong>A1</strong> Beginner</div><p id="skill-level-note" class="skill-level-note">Familiar words and short, clear messages</p><div id="skill-exercise"><button id="play-listening" class="secondary-btn" type="button">▶ &nbsp; Play the audio</button><p id="audio-status" class="record-status">Audio could not be played. Try replaying or use another browser.</p><h2>Where is Ana from?</h2><div class="skill-options"><button class="skill-option" type="button" data-correct="false" disabled="">Italy</button><button class="skill-option" type="button" data-correct="false" disabled="">Canada</button><button class="skill-option" type="button" data-correct="true" disabled="">Spain</button></div><button id="next-skill-exercise" class="primary-btn skill-action hidden" type="button">Next exercise →</button></div><p id="skill-message" class="skill-message" role="status" aria-live="polite"></p><p class="skill-helper">Practice is just for you — keep going at your own pace.</p></div>
+        </section>
+      </div>
+    </main>
+
+    <main id="battle-view" class="main hidden">
+      <div class="battle-wrap">
+        <div class="battle-nav"><button id="back-btn" class="back-btn" type="button">← &nbsp; Return</button><span class="battle-label" id="battle-world">WORDWOOD FOREST · A1</span><span class="battle-label"><span id="battle-index">1</span> / <span id="battle-total">3</span></span></div>
+        <div class="battle-progress"><div id="battle-progress-fill" style="width: 0%;"></div></div>
+        <section id="battle-card" class="battle-card">
+          <div class="arena">
+            <div class="arena-world">A wild word monster appears!</div>
+            <div id="monster-emoji" class="monster" aria-hidden="true">👾</div>
+            <div id="monster-name" class="monster-name">SPELLING SLIME</div>
+          </div>
+          <div class="battle-content">
+            <div id="question-kicker" class="question-kicker">Spot the spelling mistake</div>
+            <h2 id="question-title">Can you fix this word?</h2>
+            <p id="question-hint" class="battle-hint">This word tells you the reason why.</p>
+            <form id="answer-form"><input id="answer-input" class="answer-input" type="text" autocomplete="off" spellcheck="false" aria-label="Your corrected answer" placeholder="becaus"><button class="primary-btn answer-btn" type="submit">Cast a word spell ✨</button></form>
+            <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+            <div class="battle-footer"><span>Reward: <strong id="battle-reward">+20 XP</strong></span><span>Hint available <strong>anytime</strong></span></div>
+          </div>
+        </section>
+        <section id="complete-card" class="battle-card complete-card hidden">
+          <div class="trophy">🏆</div><h2 id="complete-title">A1 world complete!</h2><p id="complete-description">You completed the A1 challenges and earned 20 XP for each correction.</p>
+          <button id="return-btn" class="primary-btn" type="button">Back to your map</button>
+        </section>
+      </div>
+    </main>
+    <footer>Small steps. Strong words. Big adventures. &nbsp;✦<br><span>© 2026 Jonnier Rodríguez. All rights reserved.</span></footer>
+  </div>
+  <script>
+    const wordwoodLevels = [
+      { code: "A1", name: "Beginner", focus: "Spot familiar spelling mistakes and simple verb errors", questions: [
+        { wrong: "becaus", answer: "because", emoji: "👾", name: "SPELLING SLIME", hint: "This word tells you the reason why." },
+        { wrong: "The cat are sleepy.", answer: "The cat is sleepy.", emoji: "👹", name: "GRAMMAR GOBLIN", hint: "One cat needs a singular helping verb." },
+        { wrong: "I definately agree.", answer: "I definitely agree.", emoji: "👻", name: "TYPO WRAITH", hint: "The tricky middle sounds like 'finite'." }
+      ] },
+      { code: "A2", name: "Elementary", focus: "Correct everyday words, plurals, and past-tense sentences", questions: [
+        { wrong: "The childs are playing outside.", answer: "The children are playing outside.", emoji: "🐛", name: "THE PLURAL CATERPILLAR", hint: "The plural of “child” is “children.”" },
+        { wrong: "She dont like cold weather.", answer: "She doesn't like cold weather.", emoji: "🧟", name: "THE VERB-ZOMBIE", hint: "With “she,” use “doesn't.”" }
+      ] },
+      { code: "B1", name: "Intermediate", focus: "Handle common spelling traps and connected clauses", questions: [
+        { wrong: "We recieved your message yesterday.", answer: "We received your message yesterday.", emoji: "🦇", name: "THE VOWEL BAT", hint: "After c, the i and e switch places." },
+        { wrong: "The enviroment needs our protection.", answer: "The environment needs our protection.", emoji: "🐍", name: "THE MISSING-N SERPENT", hint: "Add the n after the o in “environment.”" }
+      ] },
+      { code: "B2", name: "Upper intermediate", focus: "Fix word forms and sentence-level agreement", questions: [
+        { wrong: "The team have completed its final task.", answer: "The team has completed its final task.", emoji: "🧌", name: "THE AGREEMENT TROLL", hint: "Treat “team” as one group and keep the verb and pronoun consistent." },
+        { wrong: "Their planning to leave before the storm.", answer: "They're planning to leave before the storm.", emoji: "👻", name: "THE HOMOPHONE WRAITH", hint: "Use the contraction for “they are.”" }
+      ] },
+      { code: "C1", name: "Advanced", focus: "Correct formal spelling and complex agreement", questions: [
+        { wrong: "The results are consistant with earlier research.", answer: "The results are consistent with earlier research.", emoji: "🐲", name: "THE CONSISTENCY DRAGON", hint: "The ending is spelled “-ent,” not “-ant.”" },
+        { wrong: "Neither proposal offer a practical solution.", answer: "Neither proposal offers a practical solution.", emoji: "🧙", name: "THE SUBJECT SPECTER", hint: "“Neither” takes a singular verb here." }
+      ] },
+      { code: "C2", name: "Proficient", focus: "Polish subtle spelling, agreement, and formal usage", questions: [
+        { wrong: "The committee reached a concensus after a lengthy debate.", answer: "The committee reached a consensus after a lengthy debate.", emoji: "👑", name: "THE CONSENSUS PHANTOM", hint: "The correct spelling is “consensus,” without the extra c." },
+        { wrong: "Each of the findings support the original hypothesis.", answer: "Each of the findings supports the original hypothesis.", emoji: "🐉", name: "THE QUANTIFIER WYRM", hint: "The subject is “each,” which takes a singular verb." }
+      ] }
+    ];
+    const grammarGalaxyLevels = [
+      { code: "A1", name: "Beginner", focus: "Use basic subject–verb agreement and simple sentence forms", questions: [
+        { wrong: "I is happy today.", answer: "I am happy today.", emoji: "👾", name: "THE AM-IS SLIME", hint: "Use “am” with “I.”" },
+        { wrong: "She have a red bag.", answer: "She has a red bag.", emoji: "👹", name: "THE HAS GOBLIN", hint: "With “she,” use “has.”" }
+      ] },
+      { code: "A2", name: "Elementary", focus: "Correct common past, plural, and auxiliary forms", questions: [
+        { wrong: "They was at the museum yesterday.", answer: "They were at the museum yesterday.", emoji: "🧟", name: "THE PAST-TENSE ZOMBIE", hint: "Use “were” with “they.”" },
+        { wrong: "He doesn't likes playing chess.", answer: "He doesn't like playing chess.", emoji: "🦇", name: "THE EXTRA-S BAT", hint: "After “doesn't,” use the base verb “like.”" }
+      ] },
+      { code: "B1", name: "Intermediate", focus: "Control tense, clauses, and common verb patterns", questions: [
+        { wrong: "I have seen her last week.", answer: "I saw her last week.", emoji: "👻", name: "THE TIME-CLAUSE WRAITH", hint: "Use simple past with a finished time such as “last week.”" },
+        { wrong: "Although it was late, but we continued working.", answer: "Although it was late, we continued working.", emoji: "🐛", name: "THE DOUBLE-LINKER", hint: "Use “although” or “but,” not both in the same clause structure." }
+      ] },
+      { code: "B2", name: "Upper intermediate", focus: "Repair complex clauses, conditionals, and reference", questions: [
+        { wrong: "If I would know the answer, I would tell you.", answer: "If I knew the answer, I would tell you.", emoji: "🧌", name: "THE CONDITIONAL TROLL", hint: "In this second conditional, use the past form in the if-clause." },
+        { wrong: "The book which I borrowed it was fascinating.", answer: "The book which I borrowed was fascinating.", emoji: "🐍", name: "THE RELATIVE-CLAUSE SERPENT", hint: "The relative pronoun already acts as the object; remove the extra “it.”" }
+      ] },
+      { code: "C1", name: "Advanced", focus: "Use inversion and formal clause structures accurately", questions: [
+        { wrong: "Not only the plan reduced costs, but it also improved access.", answer: "Not only did the plan reduce costs, but it also improved access.", emoji: "🐲", name: "THE INVERSION DRAGON", hint: "After fronted “not only,” invert the auxiliary and subject." },
+        { wrong: "The manager insisted that every report is submitted by Friday.", answer: "The manager insisted that every report be submitted by Friday.", emoji: "🧙", name: "THE SUBJUNCTIVE SPECTER", hint: "Formal English can use the base-form subjunctive after “insisted that.”" }
+      ] },
+      { code: "C2", name: "Proficient", focus: "Polish advanced agreement, inversion, and idiomatic structure", questions: [
+        { wrong: "So detailed the account was that readers could reconstruct the sequence.", answer: "So detailed was the account that readers could reconstruct the sequence.", emoji: "👑", name: "THE INVERSION PHANTOM", hint: "With fronted “so + adjective,” place the verb before the subject." },
+        { wrong: "The more carefully the evidence is examined, the clearer the limitations becomes.", answer: "The more carefully the evidence is examined, the clearer the limitations become.", emoji: "🐉", name: "THE AGREEMENT WYRM", hint: "The verb agrees with the plural noun “limitations.”" }
+      ] }
+    ];
+    const hunterLevels = [
+      { code: "A1", name: "Beginner", focus: "Spot familiar spelling mistakes and simple verb errors", questions: [
+        { wrong: "becaus", answer: "because", emoji: "👾", name: "THE REASON SLIME", hint: "This word tells you why something happens." },
+        { wrong: "The cat are sleepy.", answer: "The cat is sleepy.", emoji: "👹", name: "THE SLEEPY GOBLIN", hint: "One cat needs “is.”" }
+      ] },
+      { code: "A2", name: "Elementary", focus: "Correct everyday words, plurals, and past-tense sentences", questions: [
+        { wrong: "I definately like this book.", answer: "I definitely like this book.", emoji: "👻", name: "THE CERTAINTY WRAITH", hint: "The middle of “definitely” is “finite.”" },
+        { wrong: "The children was playing outside.", answer: "The children were playing outside.", emoji: "👹", name: "THE AGREEMENT OGRE", hint: "“Children” is plural, so choose “were.”" }
+      ] },
+      { code: "B1", name: "Intermediate", focus: "Handle common spelling traps and connected clauses", questions: [
+        { wrong: "The enviroment is important to everyone.", answer: "The environment is important to everyone.", emoji: "🐍", name: "THE MISSING-N SERPENT", hint: "Add the n after the o in “environment.”" },
+        { wrong: "She don't enjoy getting up early.", answer: "She doesn't enjoy getting up early.", emoji: "🧟", name: "THE VERB-ZOMBIE", hint: "With “she,” use “doesn't.”" }
+      ] },
+      { code: "B2", name: "Upper intermediate", focus: "Fix complex agreement and precise word forms", questions: [
+        { wrong: "The committee have reached its final decision.", answer: "The committee has reached its final decision.", emoji: "🧌", name: "THE COMMITTEE TROLL", hint: "Treat “committee” as one group and keep the verb and pronoun consistent." },
+        { wrong: "Despite of the delay, the team delivered the report.", answer: "Despite the delay, the team delivered the report.", emoji: "🦇", name: "THE PREPOSITION BAT", hint: "Use “despite” directly before a noun phrase." }
+      ] },
+      { code: "C1", name: "Advanced", focus: "Repair formal clauses, inversion, and conditional structures", questions: [
+        { wrong: "Rarely the researchers have encountered such a result.", answer: "Rarely have the researchers encountered such a result.", emoji: "🐲", name: "THE INVERSION DRAGON", hint: "A negative adverb at the start calls for subject–auxiliary inversion." },
+        { wrong: "Had the data been checked, the error would not occur.", answer: "Had the data been checked, the error would not have occurred.", emoji: "🧙", name: "THE CONDITIONAL SPECTER", hint: "Complete the third conditional with “would have” plus a past participle." }
+      ] },
+      { code: "C2", name: "Proficient", focus: "Polish subtle grammar, parallelism, and advanced usage", questions: [
+        { wrong: "Neither the director nor the editors was willing to revise their conclusion.", answer: "Neither the director nor the editors were willing to revise their conclusion.", emoji: "👑", name: "THE PARALLELISM PHANTOM", hint: "With “neither … nor,” the verb agrees with the nearer subject." },
+        { wrong: "The findings, which were independently verified, challenges the prevailing account.", answer: "The findings, which were independently verified, challenge the prevailing account.", emoji: "🐉", name: "THE RESEARCH WYRM", hint: "The main subject is the plural noun “findings”; the relative clause does not change it." }
+      ] }
+    ];
+    let activeQuestions = wordwoodLevels[0].questions;
+    let activeBattleLevels = wordwoodLevels;
+    let battleXpReward = 20;
+    let questionIndex = 0;
+    let xp = 120;
+    let defeated = 0;
+    const progressStorageKey = "englishlite-progress-v1";
+    const completedBattleQuestions = { "Wordwood Forest": 0, "Grammar Galaxy": 0, "Monster Hunter Nebula": 0 };
+    const unlockedBattleLevels = { "Wordwood Forest": 0, "Grammar Galaxy": 0, "Monster Hunter Nebula": 0 };
+    let activeBattleLevel = 0;
+    let worldName = "Wordwood Forest";
+    let awaitingNext = false;
+    const completedSkills = new Set();
+    let activeRecorder = null;
+    let activeSpeechRecognition = null;
+    let recordingStream = null;
+    let recordedAudioUrl = null;
+    let speakingRecorded = false;
+    let speechTranscript = "";
+    let speechInterimTranscript = "";
+    let speechConfidence = [];
+    let speechRecognitionEnded = true;
+    let speechRecognitionError = "";
+    let speechRecognitionEndTimer = 0;
+    let speakingAudioReady = false;
+    let speechAnalysisRequested = false;
+    let skillSession = 0;
+    let bonusBadgeAwarded = false;
+    let activeSkill = "";
+    let skillExerciseIndex = 0;
+    let skillAnswerLocked = false;
+    let activeSkillLevel = 0;
+    const unlockedSkillLevels = { listening: 0, reading: 0, writing: 0, speaking: 0 };
+    const rewardedExercises = new Set();
+    const speechFeedbackLimitation = "The clarity estimate is not a phonetic pronunciation test and cannot identify exact mispronounced sounds. Replay your recording to check word endings, syllable stress, and pacing.";
+
+    const skillContent = {
+      listening: {
+        title: "Listening journey · A1 to C2",
+        description: "Build your listening skills step by step. Complete five audio exercises to unlock the next CEFR level.",
+        levels: [
+          {
+            code: "A1", name: "Beginner", focus: "Familiar words and short, clear messages",
+            exercises: [
+              { prompt: "Hello. My name is Ana. I am from Spain.", question: "Where is Ana from?", options: ["Spain", "Italy", "Canada"], answer: "Spain" },
+              { prompt: "Good morning. The bus to the city leaves at eight o'clock.", question: "When does the bus leave?", options: ["At eight o'clock", "At nine o'clock", "At seven o'clock"], answer: "At eight o'clock" },
+              { prompt: "I would like a small coffee and a cheese sandwich, please.", question: "What does the speaker order?", options: ["Coffee and a cheese sandwich", "Tea and a salad", "Water and a cake"], answer: "Coffee and a cheese sandwich" },
+              { prompt: "Tom has two sisters. Their names are Lucy and Emma.", question: "How many sisters does Tom have?", options: ["Two", "One", "Three"], answer: "Two" },
+              { prompt: "The red bag is on the chair, next to the window.", question: "Where is the red bag?", options: ["On the chair", "Under the table", "By the door"], answer: "On the chair" }
+            ]
+          },
+          {
+            code: "A2", name: "Elementary", focus: "Everyday routines, plans, and simple details",
+            exercises: [
+              { prompt: "Hi, Sam. Are you still coming to the park on Saturday? We can meet near the main gate at eleven. Bring a jacket because it may get windy.", question: "Where will Sam meet the speaker?", options: ["Near the main gate", "At the train station", "Outside the library"], answer: "Near the main gate" },
+              { prompt: "Last weekend, I visited my aunt in Brighton. We walked along the beach in the morning, then had lunch at a little fish restaurant. The weather was sunny, but quite cold.", question: "What did they do in the morning?", options: ["Walked along the beach", "Went shopping", "Visited a museum"], answer: "Walked along the beach" },
+              { prompt: "Excuse me, could you tell me how to get to the post office? Go straight ahead, turn left at the bank, and it is opposite the supermarket.", question: "Where is the post office?", options: ["Opposite the supermarket", "Behind the bank", "Next to the station"], answer: "Opposite the supermarket" },
+              { prompt: "The cooking class has moved from Tuesday evening to Thursday at half past six. Please bring an apron.", question: "When is the cooking class now?", options: ["Thursday at 6:30", "Tuesday at 6:30", "Thursday at 5:30"], answer: "Thursday at 6:30" },
+              { prompt: "Sofia usually walks to work, but today she is taking the number twelve bus because her shoes are wet.", question: "Why is Sofia taking the bus today?", options: ["Her shoes are wet", "She is late", "It is too far to walk"], answer: "Her shoes are wet" }
+            ]
+          },
+          {
+            code: "B1", name: "Intermediate", focus: "Main ideas, reasons, and connected speech",
+            exercises: [
+              { prompt: "I used to take the car to work every day, but parking became too expensive. Now I cycle most mornings. It takes about ten minutes longer, but I feel much more awake when I arrive.", question: "Why did the speaker stop driving to work?", options: ["Parking cost too much", "The office moved", "The car was too slow"], answer: "Parking cost too much" },
+              { prompt: "The community garden started as a small project between four neighbors. This spring, the school joined in, and students now help grow vegetables for the local food bank. The organizers hope more families will take part next year.", question: "Who receives vegetables from the garden?", options: ["The local food bank", "A nearby restaurant", "The school library"], answer: "The local food bank" },
+              { prompt: "The weather forecast says heavy rain will arrive around lunchtime and continue through the afternoon. If you are walking home, take a waterproof coat. The evening should be much clearer.", question: "When is the rain expected to stop?", options: ["By the evening", "Before lunchtime", "Tomorrow morning"], answer: "By the evening" },
+              { prompt: "I signed up for the photography course because I wanted to take better holiday pictures. I didn't expect to enjoy editing them so much.", question: "What surprised the speaker?", options: ["Enjoying photo editing", "The cost of the course", "How many people enrolled"], answer: "Enjoying photo editing" },
+              { prompt: "The sports center is extending its opening hours during the school holidays. It will close at nine instead of seven, although the swimming pool will still shut an hour earlier for cleaning.", question: "What time will the sports center close?", options: ["Nine o'clock", "Seven o'clock", "Eight o'clock"], answer: "Nine o'clock" }
+            ]
+          },
+          {
+            code: "B2", name: "Upper intermediate", focus: "Arguments, implications, and contrasting points",
+            exercises: [
+              { prompt: "The council's proposal to pedestrianize Market Street has attracted mixed reactions. Local businesses worry that fewer drivers will mean fewer customers. However, the pilot scheme on nearby King Street found that foot traffic actually increased once the area became quieter and safer. The council says it will publish updated access plans before making a final decision.", question: "What evidence supports the proposal?", options: ["A nearby pilot increased foot traffic", "All local businesses support it", "The street already has no traffic"], answer: "A nearby pilot increased foot traffic" },
+              { prompt: "I appreciate that the report is thorough, and the figures are clearly presented. What it doesn't quite address, though, is whether the increase in sign-ups translated into sustained use. Without that distinction, we may be celebrating initial curiosity rather than lasting engagement.", question: "What does the speaker think the report is missing?", options: ["Evidence that users stayed engaged", "Clearer presentation of its figures", "More information about sign-up costs"], answer: "Evidence that users stayed engaged" },
+              { prompt: "We were told the refurbishment would cause a little disruption, which, as anyone who has tried to work beside a pneumatic drill can confirm, was rather optimistic. Still, the new reading rooms are excellent, and I suspect the library will be worth the temporary inconvenience.", question: "How does the speaker feel about the refurbishment overall?", options: ["Positive, despite the disruption", "Completely opposed to it", "Indifferent to the result"], answer: "Positive, despite the disruption" },
+              { prompt: "The proposal is not without merit; consolidating the two teams could reduce duplicated work. But the savings quoted assume that everyone can be retrained within a fortnight, which seems to me an optimistic reading of both the schedule and the people involved.", question: "What is the speaker's main concern?", options: ["The retraining timeline may be unrealistic", "The teams already do identical work", "The proposal has no possible benefits"], answer: "The retraining timeline may be unrealistic" },
+              { prompt: "I wouldn't go so far as to say the lecture was a waste of time. The speaker clearly knew the subject inside out. It was simply rather difficult to tell, amid the fascinating digressions, what the central argument was meant to be.", question: "What did the listener find difficult?", options: ["Identifying the central argument", "Hearing the speaker clearly", "Understanding the subject at all"], answer: "Identifying the central argument" }
+            ]
+          },
+          {
+            code: "C1", name: "Advanced", focus: "Nuance, inference, and extended arguments",
+            exercises: [
+              { prompt: "The assumption that remote work inevitably erodes collaboration rests on a rather narrow conception of what collaboration entails. Spontaneous office conversations may be harder to replicate online, certainly; yet asynchronous discussion often gives quieter contributors time to formulate ideas they might otherwise suppress. The more pertinent question, then, is not where people work, but whether teams deliberately create conditions in which different modes of participation are valued.", question: "What is the speaker's main argument?", options: ["Teams should value different ways of contributing", "Office conversations are always more productive", "Remote work makes collaboration impossible"], answer: "Teams should value different ways of contributing" },
+              { prompt: "The archive's significance lies less in the celebrated manuscripts that survived than in the mundane correspondence no one thought worth preserving. Taken together, these letters complicate the tidy account of the period found in official records: not by overturning it entirely, but by revealing the negotiations and uncertainties those records smooth over.", question: "What do the letters reveal?", options: ["Everyday uncertainty missing from official accounts", "That the celebrated manuscripts are inaccurate", "A completely different historical period"], answer: "Everyday uncertainty missing from official accounts" },
+              { prompt: "The initiative has undeniably broadened access, although access alone should not be mistaken for equity. Participants still arrive with vastly different levels of prior experience, and the program's optional mentoring is taken up disproportionately by those already best equipped to benefit from it. Its next phase would do well to address that imbalance rather than simply expand enrollment.", question: "What should the program prioritize next?", options: ["Making support reach those who need it most", "Increasing enrollment without other changes", "Removing mentoring from the program"], answer: "Making support reach those who need it most" },
+              { prompt: "The novel's apparent digressions are not ornamental detours so much as a quiet challenge to the premise that a life can be rendered as a sequence of decisive turning points. Its narrator accumulates detail without resolving it, asking us to sit with the possibility that coherence is something imposed after the fact.", question: "What does the novel challenge?", options: ["The idea that a life forms a neat sequence of turning points", "The value of including detailed descriptions", "The reliability of all first-person narrators"], answer: "The idea that a life forms a neat sequence of turning points" },
+              { prompt: "It is tempting to frame the policy's uneven results as an implementation failure, and in part they are. Yet that explanation risks insulating the underlying design from scrutiny. If a measure works only where the very conditions it is meant to create already exist, the distinction between poor delivery and a flawed premise begins to look rather academic.", question: "What broader issue does the speaker raise?", options: ["The policy's basic design may be flawed", "The policy succeeded everywhere it was tried", "Implementation details are never important"], answer: "The policy's basic design may be flawed" }
+            ]
+          },
+          {
+            code: "C2", name: "Proficient", focus: "Subtle stance, idiom, and complex implied meaning",
+            exercises: [
+              { prompt: "The minister's assurance that the review will leave no stone unturned was delivered with admirable conviction. Whether the review will be afforded the time, independence, and unvarnished evidence such a promise entails is another matter. A thorough inquiry can scarcely be expected to reach uncomfortable conclusions if its terms of reference have already drawn the boundaries around what may be questioned.", question: "What reservation does the speaker imply?", options: ["The review's independence and scope may be constrained", "The review will certainly take too long", "The minister has already published its conclusions"], answer: "The review's independence and scope may be constrained" },
+              { prompt: "Calling the exhibition a retrospective is, in one sense, accurate: it spans four decades. Yet the arrangement is so insistently chronological that it risks turning a restless, self-questioning body of work into a neat progression toward mastery. The artist's late pieces, in particular, seem less like a culmination than a deliberate refusal to arrive.", question: "What does the speaker criticize about the exhibition?", options: ["Its chronology oversimplifies the artist's development", "It excludes the artist's earliest work", "Its late pieces show unquestioned mastery"], answer: "Its chronology oversimplifies the artist's development" },
+              { prompt: "It would be disingenuous to claim that the merger was driven solely by a shared vision; the balance sheet had a voice in the matter, and not a quiet one. That does not, however, make the resulting partnership a sham. Institutions, like people, can arrive at worthwhile arrangements for reasons that are hardly pure, and the more telling test will be what they choose to do once the immediate arithmetic has been settled.", question: "What is the speaker's view of the merger?", options: ["Its motives were mixed, and its value remains to be seen", "It was purely idealistic and certain to succeed", "Financial motives make any partnership worthless"], answer: "Its motives were mixed, and its value remains to be seen" },
+              { prompt: "The review's authors are careful to distinguish an absence of evidence from evidence of absence, a distinction the headlines have since managed to erase with some efficiency. Their findings neither confirm the suspected effect nor rule it out; they establish, rather less dramatically, that the available data cannot yet settle the question.", question: "What do the review's findings establish?", options: ["The available data cannot settle the question yet", "The suspected effect has been disproved", "The suspected effect has been conclusively confirmed"], answer: "The available data cannot settle the question yet" },
+              { prompt: "The committee's report is admirably candid about the obstacles it encountered, though candor about a process is not quite the same thing as accountability for its outcome. We now know why the targets were missed; whether those responsible will alter course, rather than merely refine the explanation, remains to be seen.", question: "What remains uncertain to the speaker?", options: ["Whether those responsible will change their approach", "Why the committee wrote its report", "Whether the targets were actually missed"], answer: "Whether those responsible will change their approach" }
+            ]
+          }
+        ]
+      },
+      reading: {
+        title: "Reading worlds · A1 to C2",
+        description: "Read increasingly challenging texts. Complete each level to unlock the next CEFR stage.",
+        levels: [
+          { code: "A1", name: "Beginner", focus: "Find familiar facts in short, simple texts", exercises: [
+            { prompt: "Mia has a small dog. Its name is Pip. Pip likes to sleep by the door.", question: "Where does Pip like to sleep?", options: ["By the door", "On the table", "In the garden"], answer: "By the door" },
+            { prompt: "Ben goes to the park on Sunday. He plays football with his sister.", question: "Who plays football with Ben?", options: ["His sister", "His teacher", "His friend"], answer: "His sister" }
+          ] },
+          { code: "A2", name: "Elementary", focus: "Understand everyday descriptions and simple reasons", exercises: [
+            { prompt: "Nora usually walks to work, but today she took the bus because it was raining heavily. She left her umbrella beside the front door.", question: "Why did Nora take the bus?", options: ["It was raining heavily", "Her shoes were new", "The bus was faster"], answer: "It was raining heavily" },
+            { prompt: "The community pool is closed on Mondays for cleaning. During the summer, it opens at eight in the morning instead of nine.", question: "What time does the pool open in summer?", options: ["Eight o'clock", "Nine o'clock", "Ten o'clock"], answer: "Eight o'clock" }
+          ] },
+          { code: "B1", name: "Intermediate", focus: "Follow connected events and infer straightforward motives", exercises: [
+            { prompt: "When the town library extended its evening hours, weekday visits rose only slightly. Weekend attendance, however, increased after the library began hosting free workshops for families. Staff now plan to add more hands-on events.", question: "Which change was followed by more weekend visits?", options: ["Free family workshops", "Longer weekday hours", "A new borrowing fee"], answer: "Free family workshops" },
+            { prompt: "Kai joined a local cycling group to improve his fitness. He expected the longer routes to be difficult, but found that the regular stops made them manageable. He now cycles to work twice a week.", question: "What helped Kai manage the longer routes?", options: ["Regular stops", "A faster bicycle", "Shorter working hours"], answer: "Regular stops" }
+          ] },
+          { code: "B2", name: "Upper intermediate", focus: "Interpret arguments, contrast, and implied meaning", exercises: [
+            { prompt: "The proposed bike lanes would remove several parking spaces, a change some shop owners oppose. A trial on a nearby street nevertheless found that cyclists and pedestrians visited more often, and overall retail spending rose modestly. The results are promising, though they do not prove that the lanes alone caused the increase.", question: "What limitation does the passage acknowledge?", options: ["The trial cannot prove the lanes alone caused the rise", "The trial showed retail spending fell", "Shop owners unanimously supported the plan"], answer: "The trial cannot prove the lanes alone caused the rise" },
+            { prompt: "The report is elegantly presented, and its survey reached an impressive number of people. Yet its conclusions rely on responses collected immediately after the campaign, so they reveal little about whether the new habits endured.", question: "What does the writer consider uncertain?", options: ["Whether the habits lasted over time", "How many people answered", "Whether the report was published"], answer: "Whether the habits lasted over time" }
+          ] },
+          { code: "C1", name: "Advanced", focus: "Evaluate nuanced claims and distinguish evidence from inference", exercises: [
+            { prompt: "Calling the pilot a failure because it missed its headline target would be premature. Participation was lower than forecast, but the participants who completed the programme reported substantial gains. More importantly, interviews suggest that the schedule—not the material itself—discouraged many applicants. The findings therefore warrant redesign rather than abandonment, although a larger trial is needed before effectiveness can be claimed.", question: "What course of action does the writer favor?", options: ["Redesign the programme and test it further", "End the programme immediately", "Claim its effectiveness is already proven"], answer: "Redesign the programme and test it further" },
+            { prompt: "The archive's gaps are often treated as neutral absences. They are not: records were preserved selectively, and the resulting collection privileges institutions that could afford to document themselves. Reading against that imbalance does not restore every lost voice, but it does make the limits of the evidence visible.", question: "What does “reading against that imbalance” aim to do?", options: ["Expose how selective preservation shapes the evidence", "Recover every missing document with certainty", "Show that institutions kept no records"], answer: "Expose how selective preservation shapes the evidence" }
+          ] },
+          { code: "C2", name: "Proficient", focus: "Synthesize complex reasoning, qualification, and rhetorical stance", exercises: [
+            { prompt: "To describe the reform as either a triumph or a debacle is to mistake administrative visibility for causal clarity. The headline metric improved, certainly, but it did so alongside changes in staffing and eligibility; attributing the shift to the reform alone would require a comparison the evaluation never made. This is not to say the policy had no effect, only that the evidence cannot bear the certainty its advocates—and, more curiously, some of its critics—place upon it.", question: "What is the passage's central qualification?", options: ["The observed change cannot be attributed to the reform alone from this evaluation", "The policy certainly had no effect", "The headline metric declined after the reform"], answer: "The observed change cannot be attributed to the reform alone from this evaluation" },
+            { prompt: "The essay's apparent digressions are less digressive than they first seem: each interrupts the chronology precisely where an official account would convert contingency into inevitability. The author does not replace one definitive narrative with another; rather, the interruptions keep open the question of what the archive's orderly sequence has excluded.", question: "What function do the apparent digressions serve?", options: ["They challenge the inevitability implied by the official chronology", "They provide a definitive replacement narrative", "They confirm that the archive is complete"], answer: "They challenge the inevitability implied by the official chronology" }
+          ] }
+        ]
+      },
+      writing: {
+        title: "Writing worlds · A1 to C2",
+        description: "Correct and refine sentences from beginner basics to advanced grammar. Complete each level to unlock the next.",
+        levels: [
+          { code: "A1", name: "Beginner", focus: "Write short sentences with basic capitalization and agreement", exercises: [
+            { prompt: "i like cats", question: "Add capitalization and punctuation:", answer: "I like cats." },
+            { prompt: "the dog are big", question: "Correct the sentence:", answer: "The dog is big." }
+          ] },
+          { code: "A2", name: "Elementary", focus: "Use common past forms, plurals, and everyday punctuation", exercises: [
+            { prompt: "we visit my aunt yesterday", question: "Correct the sentence:", answer: "We visited my aunt yesterday." },
+            { prompt: "There are three childs in the garden", question: "Correct the plural noun and punctuation:", answer: "There are three children in the garden." }
+          ] },
+          { code: "B1", name: "Intermediate", focus: "Connect ideas and use common verb forms accurately", exercises: [
+            { prompt: "She missed the bus, so she walk to work", question: "Correct the verb and punctuation:", answer: "She missed the bus, so she walked to work." },
+            { prompt: "I enjoy to read because it help me relax", question: "Correct the grammar:", answer: "I enjoy reading because it helps me relax." }
+          ] },
+          { code: "B2", name: "Upper intermediate", focus: "Write accurate complex sentences and conditionals", exercises: [
+            { prompt: "Despite of the heavy rain, the match continued", question: "Correct the preposition and punctuation:", answer: "Despite the heavy rain, the match continued." },
+            { prompt: "If I would have known, I would tell you", question: "Correct the third conditional:", answer: "If I had known, I would have told you." }
+          ] },
+          { code: "C1", name: "Advanced", focus: "Control inversion, clause structure, and formal register", exercises: [
+            { prompt: "Rarely we have seen such a convincing result", question: "Correct the inversion and punctuation:", answer: "Rarely have we seen such a convincing result." },
+            { prompt: "The proposal, which were carefully reviewed, need further evidence", question: "Correct agreement in both clauses:", answer: "The proposal, which was carefully reviewed, needs further evidence." }
+          ] },
+          { code: "C2", name: "Proficient", focus: "Polish subtle agreement and parallel structures", exercises: [
+            { prompt: "The report recommends reducing waste, that energy use be monitored, and to publish annual results", question: "Make the list parallel:", answer: "The report recommends reducing waste, monitoring energy use, and publishing annual results." },
+            { prompt: "The evidence is compelling; however it does not justify the certainty with which the claim is often made", question: "Correct the punctuation and sentence ending:", answer: "The evidence is compelling; however, it does not justify the certainty with which the claim is often made." }
+          ] }
+        ]
+      },
+      speaking: {
+        title: "Speaking worlds · A1 to C2",
+        description: "Record answers to increasingly nuanced prompts. Complete each level to unlock the next CEFR stage.",
+        levels: [
+          { code: "A1", name: "Beginner", focus: "Answer simple questions about yourself and familiar things", exercises: [
+            { prompt: "What is your name, and where are you from?", keywords: ["name", "from", "live", "city", "country"] },
+            { prompt: "What food do you like? Describe it with one or two words.", keywords: ["food", "like", "favorite", "favourite", "sweet", "good", "rice", "fruit"] }
+          ] },
+          { code: "A2", name: "Elementary", focus: "Describe routines, preferences, and past experiences", exercises: [
+            { prompt: "Describe what you usually do on a school or work day.", keywords: ["usually", "morning", "work", "school", "start", "after", "then"] },
+            { prompt: "Tell me about something fun you did last weekend.", keywords: ["weekend", "went", "visited", "played", "saw", "friend", "family"] }
+          ] },
+          { code: "B1", name: "Intermediate", focus: "Give reasons, examples, and connected explanations", exercises: [
+            { prompt: "Describe a skill you would like to learn and explain why it matters to you.", keywords: ["skill", "learn", "because", "practice", "useful", "goal", "important"] },
+            { prompt: "Talk about a small problem you solved recently. What did you do?", keywords: ["problem", "solved", "because", "first", "then", "decided", "result"] }
+          ] },
+          { code: "B2", name: "Upper intermediate", focus: "Develop a viewpoint and acknowledge alternatives", exercises: [
+            { prompt: "Should students have less homework and more independent projects? Give reasons and consider a different viewpoint.", keywords: ["students", "homework", "projects", "because", "however", "although", "benefit", "learn"] },
+            { prompt: "Describe a change in your community that would improve people's lives, including one possible drawback.", keywords: ["community", "change", "improve", "would", "benefit", "however", "cost", "people"] }
+          ] },
+          { code: "C1", name: "Advanced", focus: "Qualify arguments and compare evidence or perspectives", exercises: [
+            { prompt: "When should a city prioritize public transport over private cars? Build a qualified argument and address a counterargument.", keywords: ["transport", "cars", "public", "because", "however", "although", "trade", "evidence", "access"] },
+            { prompt: "Can a technology make communication more efficient while making it less meaningful? Explain the distinction with an example.", keywords: ["technology", "communication", "efficient", "meaningful", "although", "example", "relationship", "context"] }
+          ] },
+          { code: "C2", name: "Proficient", focus: "Synthesize competing claims and express nuanced conclusions", exercises: [
+            { prompt: "A policy is often judged by its measurable outcomes, yet what can be measured may not capture what matters most. Evaluate this claim, including how you would improve the evidence.", keywords: ["policy", "measure", "outcomes", "evidence", "however", "although", "value", "limitation", "evaluate"] },
+            { prompt: "Can preserving an imperfect institution be more ethical than replacing it with a seemingly fairer system? Weigh the risks of both continuity and reform.", keywords: ["institution", "preserve", "reform", "ethical", "continuity", "however", "risk", "fair", "trade-off"] }
+          ] }
+        ]
+      }
+    };
+
+    const battleWorldLevels = {
+      "Wordwood Forest": wordwoodLevels,
+      "Grammar Galaxy": grammarGalaxyLevels,
+      "Monster Hunter Nebula": hunterLevels
+    };
+    const battleProgressElements = {
+      "Wordwood Forest": { count: "wordwood-progress-count", fill: "wordwood-progress-fill", state: "wordwood-world-state" },
+      "Grammar Galaxy": { count: "grammar-progress-count", fill: "grammar-progress-fill", state: "grammar-world-state" },
+      "Monster Hunter Nebula": { count: "hunter-progress-count", fill: "hunter-progress-fill", state: "hunter-world-state" }
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const appRoutes = [{ view: "auth-view" }];
+    let appRouteIndex = 0;
+    history.replaceState({ englishLiteRoute: true, routeIndex: appRouteIndex }, "", location.href);
+    function syncNavigationControls() {
+      $("return-action").classList.toggle("hidden", appRouteIndex < 1);
+    }
+    function recordAppRoute(route) {
+      const current = appRoutes[appRouteIndex];
+      if (current.view === route.view && current.skill === route.skill && current.world === route.world) return;
+      appRoutes.splice(appRouteIndex + 1);
+      appRoutes.push(route);
+      appRouteIndex++;
+      history.pushState({ englishLiteRoute: true, routeIndex: appRouteIndex }, "", location.href);
+      syncNavigationControls();
+    }
+    function returnToPrevious() {
+      if (appRouteIndex > 0) history.back();
+      else showDashboard();
+    }
+    window.addEventListener("popstate", (event) => {
+      if (!event.state?.englishLiteRoute || !Number.isInteger(event.state.routeIndex)) return;
+      appRouteIndex = event.state.routeIndex;
+      const previous = appRoutes[appRouteIndex];
+      if (!previous) return;
+      if (previous.view === "dashboard-view") showDashboard(false);
+      else if (previous.view === "skill-view") openSkill(previous.skill, false);
+      else if (previous.view === "battle-view") startBattle(previous.world, false);
+      else {
+        cleanupSkillMedia();
+        $("dashboard-view").classList.add("hidden");
+        $("battle-view").classList.add("hidden");
+        $("skill-view").classList.add("hidden");
+        $("auth-view").classList.remove("hidden");
+        $("player-actions").classList.add("hidden");
+      }
+      syncNavigationControls();
+    });
+    function updateBattleWorldProgress(world) {
+      const levels = battleWorldLevels[world];
+      const elements = battleProgressElements[world];
+      const total = levels.reduce((sum, level) => sum + level.questions.length, 0);
+      const levelCode = levels[unlockedBattleLevels[world]].code;
+      $(elements.count).textContent = `${levelCode} · ${completedBattleQuestions[world]} / ${total}`;
+      $(elements.fill).style.width = `${(completedBattleQuestions[world] / total) * 100}%`;
+      $(elements.state).textContent = unlockedBattleLevels[world] === levels.length - 1
+        && completedBattleQuestions[world] === total
+        ? "✓ C2 mastered"
+        : `● ${levelCode} unlocked`;
+    }
+    function showDashboard(recordHistory = true) {
+      if (recordHistory) recordAppRoute({ view: "dashboard-view" });
+      cleanupSkillMedia();
+      $("auth-view").classList.add("hidden");
+      $("battle-view").classList.add("hidden");
+      $("skill-view").classList.add("hidden");
+      $("dashboard-view").classList.remove("hidden");
+      $("player-actions").classList.remove("hidden");
+    }
+    function startBattle(world, recordHistory = true) {
+      cleanupSkillMedia();
+      worldName = world || "Wordwood Forest";
+      if (recordHistory) recordAppRoute({ view: "battle-view", world: worldName });
+      const isHunterWorld = worldName === "Monster Hunter Nebula";
+      activeBattleLevels = battleWorldLevels[worldName];
+      activeBattleLevel = unlockedBattleLevels[worldName];
+      activeQuestions = activeBattleLevels[activeBattleLevel].questions;
+      battleXpReward = isHunterWorld ? 35 : 20;
+      questionIndex = 0;
+      $("battle-world").textContent = `${worldName.toUpperCase()} · ${activeBattleLevels[activeBattleLevel].code}`;
+      updateBattleWorldProgress(worldName);
+      $("battle-reward").textContent = `+${battleXpReward} XP`;
+      $("return-btn").textContent = "Back to your map";
+      $("complete-title").textContent = `${activeBattleLevels[activeBattleLevel].code} ${isHunterWorld ? "hunt" : "world"} complete!`;
+      $("complete-description").textContent = `You completed the ${activeBattleLevels[activeBattleLevel].code} challenges and earned ${battleXpReward} XP for each correction.`;
+      $("battle-card").classList.remove("hidden");
+      $("complete-card").classList.add("hidden");
+      $("dashboard-view").classList.add("hidden");
+      $("skill-view").classList.add("hidden");
+      $("battle-view").classList.remove("hidden");
+      renderQuestion();
+    }
+    function openSkill(skill, recordHistory = true) {
+      cleanupSkillMedia();
+      const details = skillContent[skill];
+      if (!details) return;
+      if (recordHistory) recordAppRoute({ view: "skill-view", skill });
+      activeSkill = skill;
+      $("skill-view").dataset.skill = skill;
+      skillAnswerLocked = false;
+      activeSkillLevel = unlockedSkillLevels[skill];
+      const currentExercises = details.levels[activeSkillLevel].exercises;
+      skillExerciseIndex = currentExercises.findIndex((_, index) =>
+        !rewardedExercises.has(`${skill}:${activeSkillLevel}:${index}`)
+      );
+      const levelAlreadyCompleted = skillExerciseIndex === -1;
+      if (levelAlreadyCompleted) skillExerciseIndex = currentExercises.length - 1;
+      $("dashboard-view").classList.add("hidden");
+      $("battle-view").classList.add("hidden");
+      $("skill-view").classList.remove("hidden");
+      $("skill-nav-label").textContent = `${skill.toUpperCase()} PRACTICE`;
+      $("skill-content").innerHTML = `<div class="eyebrow">${skill} practice</div><h1>${details.title}</h1><p>${details.description}</p><div class="skill-progress-meta"><span id="skill-exercise-count"></span><span id="skill-exercise-score">+5 XP per exercise</span></div><div class="skill-progress-track"><div id="skill-progress-fill" class="skill-progress-fill"></div></div><div id="skill-exercise"></div><p id="skill-message" class="skill-message" role="status" aria-live="polite"></p><p class="skill-helper">Practice is just for you — keep going at your own pace.</p>`;
+      $("skill-content").querySelector(".skill-progress-track").insertAdjacentHTML("afterend", '<div id="cefr-level" class="cefr-level hidden"></div><p id="skill-level-note" class="skill-level-note hidden"></p>');
+      renderSkillExercise();
+      if (levelAlreadyCompleted) answerSkillExercise();
+    }
+    function renderSkillExercise() {
+      const details = skillContent[activeSkill];
+      const level = details.levels[activeSkillLevel];
+      const exercises = level.exercises;
+      const exercise = exercises[skillExerciseIndex];
+      const total = exercises.length;
+      skillAnswerLocked = false;
+      speakingRecorded = false;
+      $("skill-exercise-count").textContent = `${level.code} · Exercise ${skillExerciseIndex + 1} of ${total}`;
+      $("skill-progress-fill").style.width = `${(skillExerciseIndex / total) * 100}%`;
+      $("cefr-level").classList.remove("hidden");
+      $("skill-level-note").classList.remove("hidden");
+      $("cefr-level").innerHTML = `<strong>${level.code}</strong> ${level.name}`;
+      $("skill-level-note").textContent = level.focus;
+      $("skill-message").textContent = "";
+      $("skill-message").className = "skill-message";
+      let markup;
+      if (activeSkill === "listening") {
+        markup = `<button id="play-listening" class="secondary-btn" type="button">▶ &nbsp; Play the audio</button><p id="audio-status" class="record-status">Listen to the audio before choosing your answer.</p><h2>${exercise.question}</h2><div class="skill-options">${shuffleOptions(exercise.options).map((option) => `<button class="skill-option" type="button" data-correct="${option === exercise.answer}" disabled>${option}</button>`).join("")}</div>`;
+      } else if (activeSkill === "reading") {
+        markup = `<div class="skill-prompt"><small>Read this passage</small>${exercise.prompt}</div><h2>${exercise.question}</h2><div class="skill-options">${shuffleOptions(exercise.options).map((option) => `<button class="skill-option" type="button" data-correct="${option === exercise.answer}">${option}</button>`).join("")}</div>`;
+      } else if (activeSkill === "writing") {
+        markup = `<div class="skill-prompt"><small>Rewrite this sentence</small>${exercise.prompt}</div><h2>${exercise.question}</h2><div class="field"><label for="skill-answer">Your corrected sentence</label><input id="skill-answer" type="text" placeholder="Type your sentence..." autocomplete="off"></div><button id="check-skill" class="primary-btn skill-action" type="button">Check my sentence</button>`;
+      } else {
+        markup = `<div class="skill-prompt"><small>${level.code} · Question ${skillExerciseIndex + 1} · Answer out loud</small>${exercise.prompt}</div><p style="text-align:center;color:#c5cbe0;font-size:12px">Record your answer and get supportive feedback before moving on.</p><div class="analysis-consent"><label><input id="speech-analysis-consent" type="checkbox"><span>Enable speech-to-text feedback on my answer. Your browser's speech-recognition service may process audio under its own privacy terms. Your saved recording stays in this browser session.</span></label></div><div class="record-controls"><button id="record-start" class="record-btn" type="button">🔴 &nbsp; Start recording</button><button id="record-stop" class="record-btn stop hidden" type="button">■ &nbsp; Stop recording</button></div><p id="record-status" class="record-status">Recording works without analysis. Enable the option above for transcript-based feedback.</p><p id="speech-transcript" class="speech-transcript" aria-live="polite"></p><audio id="voice-playback" class="voice-playback hidden" controls></audio><section id="speech-feedback" class="speech-feedback hidden" aria-live="polite"><h3>Your speaking feedback</h3><p id="feedback-intro" class="speech-feedback-intro"></p><div id="feedback-results" class="feedback-results hidden"><div class="feedback-item"><strong>Answer &amp; detail</strong><span id="feedback-answer"></span></div><div class="feedback-item"><strong>Grammar &amp; sentence structure</strong><span id="feedback-grammar"></span></div><div class="feedback-item"><strong>Pronunciation &amp; clarity (recognition estimate)</strong><span id="feedback-pronunciation"></span></div><p id="speech-feedback-limitation" class="speech-feedback-intro"></p></div><div id="manual-transcript-fallback" class="manual-transcript hidden"><p id="manual-transcript-note" class="manual-transcript-note"></p><label for="manual-transcript-input">Transcript of your answer</label><textarea id="manual-transcript-input" placeholder="Type what you said in your recording..."></textarea><button id="analyze-manual-transcript" class="primary-btn" type="button">Get my feedback</button></div></section><button id="retake-speaking" class="secondary-btn skill-action hidden" type="button">Record this answer again</button>`;
+      }
+      $("skill-exercise").innerHTML = `${markup}<button id="next-skill-exercise" class="primary-btn skill-action hidden" type="button">${skillExerciseIndex === total - 1 ? "Finish practice ✨" : "Next exercise →"}</button>`;
+      if (activeSkill === "listening") {
+        $("play-listening").addEventListener("click", () => {
+          if (!("speechSynthesis" in window)) {
+            $("audio-status").textContent = "Audio playback is not supported in this browser. Try a current browser to complete listening exercises.";
+            return;
+          }
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(exercise.prompt);
+          utterance.onstart = () => { if ($("audio-status")) $("audio-status").textContent = "Playing — listen closely…"; };
+          utterance.onend = () => {
+            if ($("audio-status")) {
+              $("audio-status").textContent = "Audio finished. Replay it or choose your answer.";
+              $("skill-exercise").querySelectorAll("[data-correct]").forEach((button) => { button.disabled = false; });
+            }
+          };
+          utterance.onerror = () => { if ($("audio-status")) $("audio-status").textContent = "Audio could not be played. Try replaying or use another browser."; };
+          window.speechSynthesis.speak(utterance);
+        });
+        $("skill-exercise").querySelectorAll("[data-correct]").forEach((button) => button.addEventListener("click", handleSkillChoice));
+      }
+      if (activeSkill === "reading") {
+        $("skill-exercise").querySelectorAll("[data-correct]").forEach((button) => button.addEventListener("click", handleSkillChoice));
+      }
+      if (activeSkill === "writing") {
+        $("check-skill").addEventListener("click", checkSkillText);
+        $("skill-answer").addEventListener("keydown", (event) => {
+          if (event.key === "Enter") checkSkillText();
+        });
+        $("skill-answer").focus();
+      }
+      if (activeSkill === "speaking") setupSpeakingRecorder();
+      $("next-skill-exercise").addEventListener("click", advanceSkillExercise);
+    }
+    function shuffleOptions(options) {
+      const shuffled = [...options];
+      for (let index = shuffled.length - 1; index > 0; index--) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+      }
+      return shuffled;
+    }
+    function handleSkillChoice(event) {
+      const choice = event.target.closest("[data-correct]");
+      if (!choice || skillAnswerLocked) return;
+      if (choice.disabled) {
+        showSkillMessage("Play the audio first, then choose your answer.", false);
+        return;
+      }
+      if (choice.dataset.correct === "true") {
+        $("skill-exercise").querySelectorAll("[data-correct]").forEach((button) => { button.disabled = true; });
+        showSkillMessage("Recording saved. Review your feedback before continuing.", true);
+        answerSkillExercise();
+      } else {
+        showSkillMessage(activeSkill === "listening" ? "Not quite — replay the audio clue and listen again." : "Not quite — reread the passage and look for a clue.", false);
+      }
+    }
+    function checkSkillText() {
+      if (skillAnswerLocked) return;
+      const input = $("skill-answer").value.trim().toLowerCase().replace(/[.!?]+$/, "").replace(/\s+/g, " ");
+      const exercise = skillContent.writing.levels[activeSkillLevel].exercises[skillExerciseIndex];
+      const expected = exercise.answer.toLowerCase().replace(/[.!?]+$/, "");
+      if (!input) {
+        showSkillMessage("Type your answer before checking it.", false);
+        return;
+      }
+      if (input === expected) {
+        $("skill-answer").disabled = true;
+        $("check-skill").disabled = true;
+        answerSkillExercise();
+      } else {
+        showSkillMessage("Almost! Check the grammar, spelling, and punctuation, then try again.", false);
+      }
+    }
+    function showSkillMessage(message, success) {
+      const element = $("skill-message");
+      element.textContent = message;
+      element.className = `skill-message${success ? " good" : " bad"}`;
+    }
+    function answerSkillExercise() {
+      if (skillAnswerLocked) return;
+      skillAnswerLocked = true;
+      const rewardKey = `${activeSkill}:${activeSkillLevel}:${skillExerciseIndex}`;
+      const firstTry = !rewardedExercises.has(rewardKey);
+      if (firstTry) {
+        rewardedExercises.add(rewardKey);
+        setXp(xp + 5);
+        saveProgress();
+      }
+      showSkillMessage(firstTry ? "Correct! Great work. +5 XP ✨" : "Correct! Great work — exercise complete. ✨", true);
+      $("next-skill-exercise").classList.remove("hidden");
+      if (activeSkill === "speaking") $("record-start").disabled = true;
+      saveProgress();
+    }
+    function advanceSkillExercise() {
+      const total = skillContent[activeSkill].levels[activeSkillLevel].exercises.length;
+      clearRecordedAudio();
+      if (skillExerciseIndex < total - 1) {
+        skillExerciseIndex++;
+        renderSkillExercise();
+        return;
+      }
+      completeSkillLevel(activeSkill);
+    }
+    function completeSkillLevel(skill) {
+      const levels = skillContent[skill].levels;
+      const levelIndex = activeSkillLevel;
+      const completedLevel = levels[levelIndex];
+      const exerciseCount = completedLevel.exercises.length;
+      $("skill-progress-fill").style.width = "100%";
+      $("skill-exercise-count").textContent = `${completedLevel.code} · ${exerciseCount} of ${exerciseCount} complete`;
+      if (levelIndex < levels.length - 1) {
+        unlockedSkillLevels[skill] = Math.max(unlockedSkillLevels[skill], levelIndex + 1);
+        saveProgress();
+        const nextLevel = levels[unlockedSkillLevels[skill]];
+        $("cefr-level").innerHTML = `<strong>${nextLevel.code}</strong> ${nextLevel.name} · Unlocked`;
+        $("skill-level-note").textContent = `Next focus: ${nextLevel.focus}`;
+        $("skill-exercise").innerHTML = `<div class="complete-card"><div class="trophy">${skill === "listening" ? "🎧" : skill === "reading" ? "📚" : skill === "writing" ? "✍️" : "🎙️"}</div><h2>${completedLevel.code} complete!</h2><p>You finished all ${exerciseCount} ${completedLevel.code} ${skill} tasks. Next up: ${nextLevel.code} — ${nextLevel.name}.</p><button id="continue-cefr" class="primary-btn" type="button">Continue to ${nextLevel.code} →</button></div>`;
+        $("continue-cefr").addEventListener("click", () => {
+          activeSkillLevel = unlockedSkillLevels[skill];
+          skillExerciseIndex = 0;
+          renderSkillExercise();
+        });
+        const status = $(`${skill}-status`);
+        if (status) status.textContent = `${completedLevel.code} complete · ${nextLevel.code} unlocked`;
+      } else {
+        completeSkill(skill);
+      }
+    }
+    function completeSkill(skill) {
+      if (!completedSkills.has(skill)) {
+        completedSkills.add(skill);
+        const status = $(skill + "-status");
+        if (status) status.textContent = "✓ C2 mastered";
+        const card = document.querySelector(`[data-skill="${skill}"]`);
+        if (card) card.classList.add("completed");
+      }
+      $("skill-progress-fill").style.width = "100%";
+      const levels = skillContent[skill].levels;
+      const total = levels.reduce((sum, level) => sum + level.exercises.length, 0);
+      $("skill-exercise-count").textContent = "C2 mastered";
+      $("skill-exercise").innerHTML = `<div class="complete-card"><div class="trophy">🏆</div><h2>Practice round complete!</h2><p>You completed all ${total} ${skill} tasks, progressing from A1 to C2! Keep up the excellent work!</p><button id="return-to-map" class="primary-btn" type="button">Back to your map</button></div>`;
+      $("skill-message").textContent = "";
+      $("return-to-map").addEventListener("click", showDashboard);
+      updateBonusBadge();
+      saveProgress();
+    }
+    function updateBonusBadge() {
+      const count = completedSkills.size;
+      $("badge-progress").textContent = count === 4 ? "Badge earned!" : `${count} / 4 skills`;
+      if (count === 4 && !bonusBadgeAwarded) {
+        bonusBadgeAwarded = true;
+        $("bonus-badge").classList.add("unlocked");
+        $("badge-title").textContent = "Bonus badge unlocked · Skill Star!";
+        $("badge-description").textContent = "You practiced listening, reading, writing, and speaking. Amazing work!";
+        setXp(xp + 50);
+      }
+    }
+    async function startVoiceRecording() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === "undefined") {
+        $("record-status").textContent = "Voice recording is not supported here. Try a current browser with microphone access.";
+        return;
+      }
+      $("record-start").disabled = true;
+      const session = skillSession;
+      const analyzeSpeech = $("speech-analysis-consent").checked;
+      speechAnalysisRequested = analyzeSpeech;
+      speechTranscript = "";
+      speechInterimTranscript = "";
+      speechConfidence = [];
+      speechRecognitionError = "";
+      speechRecognitionEnded = !analyzeSpeech;
+      speakingAudioReady = false;
+      $("speech-transcript").textContent = "";
+      $("speech-transcript").style.display = "none";
+      $("speech-feedback").classList.add("hidden");
+      let requestedStream = null;
+      try {
+        requestedStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recordingStream = requestedStream;
+        const stream = requestedStream;
+        if (session !== skillSession) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+        const recorder = new MediaRecorder(stream);
+        const chunks = [];
+        recorder.addEventListener("dataavailable", (event) => {
+          if (event.data.size > 0) chunks.push(event.data);
+        });
+        recorder.addEventListener("stop", () => {
+          stream.getTracks().forEach((track) => track.stop());
+          if (recordingStream === stream) recordingStream = null;
+          if (activeRecorder === recorder) activeRecorder = null;
+          if (session !== skillSession) return;
+          $("record-start").disabled = false;
+          $("record-start").classList.remove("hidden");
+          $("record-stop").classList.add("hidden");
+          if (!chunks.length) {
+            $("record-status").textContent = "No audio was captured. Please try recording again.";
+            return;
+          }
+          if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
+          recordedAudioUrl = URL.createObjectURL(new Blob(chunks, { type: recorder.mimeType || "audio/webm" }));
+          $("voice-playback").src = recordedAudioUrl;
+          $("voice-playback").classList.remove("hidden");
+          speakingRecorded = true;
+          speakingAudioReady = true;
+          finalizeSpeakingFeedback();
+        });
+        recorder.addEventListener("error", () => {
+          $("record-status").textContent = "The recording stopped because of an audio error. Please try again.";
+        });
+        activeRecorder = recorder;
+        recorder.start();
+        if (analyzeSpeech) startSpeechRecognition(session);
+        $("record-start").classList.add("hidden");
+        $("record-stop").classList.remove("hidden");
+        $("record-status").innerHTML = '<span class="recording-dot"></span>Recording — answer the question out loud.';
+      } catch (error) {
+        requestedStream?.getTracks().forEach((track) => track.stop());
+        if (recordingStream === requestedStream) recordingStream = null;
+        if (session !== skillSession) return;
+        $("record-start").disabled = false;
+        const reason = error.name === "NotAllowedError" || error.name === "PermissionDeniedError"
+          ? "Microphone permission was denied. Allow microphone access in your browser settings, then try again."
+          : error.name === "NotFoundError"
+            ? "No microphone was found. Connect a microphone and try again."
+            : "Could not start the microphone. Check your browser and device permissions, then try again.";
+        $("record-status").textContent = reason;
+      }
+    }
+    function startSpeechRecognition(session) {
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Recognition) {
+        speechRecognitionEnded = true;
+        speechRecognitionError = "Speech-to-text is not supported by this browser.";
+        return;
+      }
+      try {
+        const recognition = new Recognition();
+        activeSpeechRecognition = recognition;
+        speechRecognitionEnded = false;
+        recognition.lang = "en-US";
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.onresult = (event) => {
+          if (session !== skillSession) return;
+          const finalParts = [];
+          const interimParts = [];
+          const confidences = [];
+          for (let index = 0; index < event.results.length; index++) {
+            const result = event.results[index];
+            const text = result[0]?.transcript?.trim();
+            if (!text) continue;
+            if (result.isFinal) {
+              finalParts.push(text);
+              if (Number.isFinite(result[0].confidence) && result[0].confidence > 0) confidences.push(result[0].confidence);
+            } else {
+              interimParts.push(text);
+            }
+          }
+          speechTranscript = finalParts.join(" ").trim();
+          speechInterimTranscript = interimParts.join(" ").trim();
+          speechConfidence = confidences;
+          const visibleText = [speechTranscript, speechInterimTranscript].filter(Boolean).join(" ");
+          if (visibleText) {
+            $("speech-transcript").style.display = "block";
+            $("speech-transcript").textContent = `Heard: ${visibleText}`;
+          }
+        };
+        recognition.onerror = (event) => {
+          if (session !== skillSession) return;
+          speechRecognitionError = event.error === "not-allowed" || event.error === "service-not-allowed"
+            ? "Speech recognition permission was denied."
+            : event.error === "network"
+              ? "The browser speech-recognition service is unavailable."
+              : event.error === "no-speech"
+                ? "No speech was detected."
+                : event.error === "audio-capture"
+                  ? "The browser could not access the microphone for speech recognition."
+                  : `Speech recognition stopped (${event.error || "unknown error"}).`;
+          speechRecognitionEnded = true;
+          if (speakingAudioReady) finalizeSpeakingFeedback();
+        };
+        recognition.onend = () => {
+          if (session !== skillSession) return;
+          if (!speechTranscript && speechInterimTranscript) speechTranscript = speechInterimTranscript;
+          speechRecognitionEnded = true;
+          clearTimeout(speechRecognitionEndTimer);
+          speechRecognitionEndTimer = 0;
+          if (activeSpeechRecognition === recognition) activeSpeechRecognition = null;
+          if (speakingAudioReady) finalizeSpeakingFeedback();
+        };
+        recognition.start();
+      } catch (error) {
+        speechRecognitionEnded = true;
+        speechRecognitionError = error.name === "NotAllowedError"
+          ? "Speech recognition permission was denied."
+          : "Speech recognition could not start in this browser.";
+      }
+    }
+    function finalizeSpeakingFeedback() {
+      if (!speakingAudioReady || !speechRecognitionEnded || !speakingRecorded || skillAnswerLocked) return;
+      $("record-status").textContent = "Recording ready — play it back and review your feedback.";
+      const transcript = speechTranscript.trim();
+      $("speech-feedback").classList.remove("hidden");
+      if (!transcript) {
+        $("feedback-intro").textContent = speechAnalysisRequested
+          ? "We couldn't create a transcript this time. Your recording is saved. Listen to it, type what you said below, and we'll give you feedback on your answer and grammar."
+          : "Your recording is saved. Listen to it, type what you said below, and we'll give you feedback on your answer and grammar.";
+        $("manual-transcript-fallback").classList.remove("hidden");
+        $("manual-transcript-note").textContent = "Automatic transcription did not return words. Transcript feedback still works: enter what you said and select Get my feedback.";
+        $("manual-transcript-input").value = speechTranscript || speechInterimTranscript;
+        $("analyze-manual-transcript").onclick = analyzeManualTranscript;
+      } else {
+        renderTranscriptFeedback(transcript, speechConfidence, "recognition");
+      }
+      answerSkillExercise();
+      $("skill-message").textContent = "Recording saved. Review your feedback before continuing.";
+      $("retake-speaking").classList.remove("hidden");
+    }
+    function renderTranscriptFeedback(transcript, confidenceValues, source) {
+      $("speech-transcript").style.display = "block";
+      $("speech-transcript").textContent = `${source === "manual" ? "Your transcript" : "Transcript"}: ${transcript}`;
+      const feedback = evaluateSpeakingResponse(transcript, skillContent.speaking.levels[activeSkillLevel].exercises[skillExerciseIndex], confidenceValues, source);
+      $("feedback-answer").textContent = feedback.answer;
+      $("feedback-grammar").textContent = feedback.grammar;
+      $("feedback-pronunciation").textContent = feedback.clarity;
+      $("feedback-pronunciation").previousElementSibling.textContent = source === "manual"
+        ? "Pronunciation & clarity"
+        : "Pronunciation & clarity (recognition estimate)";
+      $("speech-feedback-limitation").textContent = speechFeedbackLimitation;
+      $("feedback-results").classList.remove("hidden");
+      $("feedback-intro").textContent = source === "manual"
+        ? "Here is feedback based on the transcript you entered. Replay your recording to review the spoken details."
+        : "Here is feedback based on the browser's speech-to-text transcript. Recognition may mishear words, so check the transcript against your recording.";
+      $("manual-transcript-fallback").classList.remove("hidden");
+      $("manual-transcript-note").textContent = "Edit the transcript if recognition missed a word, then select Get my feedback again.";
+      $("manual-transcript-input").value = transcript;
+      $("analyze-manual-transcript").textContent = source === "manual" ? "Update my feedback" : "Get my feedback";
+    }
+    function analyzeManualTranscript() {
+      const transcript = $("manual-transcript-input").value.trim();
+      if (!transcript) {
+        $("manual-transcript-note").textContent = "Type at least a few words from your answer before getting feedback.";
+        $("manual-transcript-input").focus();
+        return;
+      }
+      renderTranscriptFeedback(transcript, [], "manual");
+      $("record-status").textContent = "Text-based feedback is ready. Replay your recording for pronunciation practice.";
+    }
+    function evaluateSpeakingResponse(transcript, exercise, confidenceValues, source) {
+      const normalized = transcript.toLowerCase();
+      const words = normalized.match(/[a-z']+/g) || [];
+      const matchedDetails = exercise.keywords.filter((keyword) => normalized.includes(keyword));
+      const hasElaboration = /\b(because|for example|for instance|also|first|then|so)\b/i.test(transcript);
+      const answerFeedback = matchedDetails.length >= 2 && hasElaboration
+        ? `Your response addressed the topic, included ${matchedDetails.length} related details, and developed an idea. A specific example can make it even richer.`
+        : matchedDetails.length >= 2
+          ? `Your response addressed the topic and included ${matchedDetails.length} related details. Add a reason using “because” or a specific example to develop your answer.`
+        : matchedDetails.length === 1
+          ? `Your response touched on the topic. Add another relevant detail and explain your reason or give an example.`
+          : `Try answering the question more directly, then add a reason or a concrete example.`;
+      const grammarFlags = [];
+      if (/\b(i|we|they|you)\s+(is|was)\b/i.test(transcript)) grammarFlags.push("check the subject-verb match in “I/we/they/you + is/was”");
+      if (/\b(he|she|it)\s+(are|were)\b/i.test(transcript)) grammarFlags.push("check the subject-verb match in “he/she/it + are/were”");
+      if (/\b(he|she|it)\s+(don't|do)\b/i.test(transcript)) grammarFlags.push("check whether “doesn't” is needed with he, she, or it");
+      if (/\b(they|we|you)\s+has\b/i.test(transcript)) grammarFlags.push("check whether “have” agrees with the subject");
+      const sentenceCount = (transcript.match(/[.!?]+/g) || []).length || (words.length >= 5 ? 1 : 0);
+      const grammarFeedback = grammarFlags.length
+        ? `Possible pattern to review: ${grammarFlags.join("; ")}. Speech-to-text can mishear words, so check the playback before making changes.`
+        : words.length < 5
+          ? "Your answer is very brief. Try a complete sentence with a subject, a verb, and one supporting detail."
+          : `The transcript contains about ${sentenceCount} sentence${sentenceCount === 1 ? "" : "s"} and ${words.length} words. ${hasElaboration ? "You used a linking word to explain or extend your idea." : "Try linking your idea to a supporting detail with “because,” “for example,” or “also.”"}`;
+      const confidence = confidenceValues.length
+        ? confidenceValues.reduce((sum, value) => sum + value, 0) / confidenceValues.length
+        : null;
+      const clarityFeedback = source === "manual"
+        ? "A typed transcript cannot be used to assess your spoken clarity. Replay your recording and check that word endings, syllable stress, and pacing are clear."
+        : confidence === null
+        ? `The browser recognized ${words.length} words, but did not provide a confidence estimate. This is not a pronunciation score; replay your audio and check that each word sounds clear to you.`
+        : confidence >= 0.75
+          ? `The browser recognizer understood most of your speech (about ${Math.round(confidence * 100)}% recognition confidence). This is only an automated clarity estimate, not a pronunciation or accent grade.`
+          : `The browser recognizer was uncertain about some speech (about ${Math.round(confidence * 100)}% recognition confidence). Try a quieter space and a steady pace. Recognition varies and does not grade your accent.`;
+      return { answer: answerFeedback, grammar: grammarFeedback, clarity: clarityFeedback };
+    }
+    function stopVoiceRecording() {
+      if (activeRecorder && activeRecorder.state === "recording") activeRecorder.stop();
+      if (activeSpeechRecognition) {
+        const recognition = activeSpeechRecognition;
+        const session = skillSession;
+        try {
+          recognition.stop();
+          clearTimeout(speechRecognitionEndTimer);
+          speechRecognitionEndTimer = setTimeout(() => {
+            if (session !== skillSession || speechRecognitionEnded) return;
+            if (!speechTranscript && speechInterimTranscript) speechTranscript = speechInterimTranscript;
+            speechRecognitionEnded = true;
+            if (activeSpeechRecognition === recognition) activeSpeechRecognition = null;
+            if (speakingAudioReady) finalizeSpeakingFeedback();
+          }, 4000);
+        } catch (error) {
+          speechRecognitionError = "Speech recognition could not finish normally.";
+          speechRecognitionEnded = true;
+          if (activeSpeechRecognition === recognition) activeSpeechRecognition = null;
+          if (speakingAudioReady) finalizeSpeakingFeedback();
+        }
+      }
+      $("record-stop").classList.add("hidden");
+    }
+    function setupSpeakingRecorder() {
+      speakingRecorded = false;
+      $("record-start").addEventListener("click", startVoiceRecording);
+      $("record-stop").addEventListener("click", stopVoiceRecording);
+      $("retake-speaking").addEventListener("click", () => {
+        skillAnswerLocked = false;
+        speakingRecorded = false;
+        speakingAudioReady = false;
+        speechTranscript = "";
+        speechInterimTranscript = "";
+        speechConfidence = [];
+        speechRecognitionError = "";
+        speechRecognitionEnded = true;
+        clearRecordedAudio();
+        $("voice-playback").removeAttribute("src");
+        $("voice-playback").classList.add("hidden");
+        $("speech-transcript").textContent = "";
+        $("speech-transcript").style.display = "none";
+        $("speech-feedback").classList.add("hidden");
+        $("feedback-results").classList.add("hidden");
+        $("manual-transcript-fallback").classList.add("hidden");
+        $("analyze-manual-transcript").textContent = "Get my feedback";
+        $("analyze-manual-transcript").onclick = analyzeManualTranscript;
+        $("retake-speaking").classList.add("hidden");
+        $("record-start").classList.remove("hidden");
+        $("record-start").disabled = false;
+        $("record-status").textContent = "Ready when you are. Start recording to try again.";
+        $("next-skill-exercise").classList.add("hidden");
+        $("skill-message").textContent = "";
+      });
+    }
+    function clearRecordedAudio() {
+      if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
+      recordedAudioUrl = null;
+    }
+    function cleanupSkillMedia() {
+      skillSession++;
+      clearTimeout(speechRecognitionEndTimer);
+      speechRecognitionEndTimer = 0;
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      if (activeSpeechRecognition) {
+        activeSpeechRecognition.onresult = null;
+        activeSpeechRecognition.onerror = null;
+        activeSpeechRecognition.onend = null;
+        activeSpeechRecognition.abort();
+        activeSpeechRecognition = null;
+      }
+      if (activeRecorder && activeRecorder.state === "recording") activeRecorder.stop();
+      recordingStream?.getTracks().forEach((track) => track.stop());
+      recordingStream = null;
+      clearRecordedAudio();
+      speakingRecorded = false;
+    }
+    function renderQuestion() {
+      const question = activeQuestions[questionIndex];
+      $("battle-index").textContent = String(questionIndex + 1);
+      $("battle-total").textContent = String(activeQuestions.length);
+      $("battle-progress-fill").style.width = `${(questionIndex / activeQuestions.length) * 100}%`;
+      $("monster-emoji").textContent = question.emoji;
+      $("monster-name").textContent = question.name;
+      const isSentence = question.wrong.includes(" ");
+      $("question-kicker").textContent = isSentence ? "Fix the sentence" : "Spot the spelling mistake";
+      $("question-title").textContent = isSentence ? "Can you make this sentence right?" : "Can you fix this word?";
+      $("question-hint").textContent = isSentence ? `Rewrite the whole sentence with correct grammar. ${question.hint}` : question.hint;
+      $("answer-input").value = "";
+      $("answer-input").disabled = false;
+      $("answer-input").placeholder = question.wrong;
+      $("answer-form").querySelector("button").textContent = worldName === "Monster Hunter Nebula" ? "Correct this monster ⚔️" : "Cast a word spell ✨";
+      awaitingNext = false;
+      $("feedback").textContent = "";
+      $("feedback").className = "feedback";
+      $("answer-input").focus();
+    }
+    function setXp(value) {
+      xp = value;
+      $("xp-count").textContent = String(xp);
+    }
+    function saveProgress() {
+      const progress = {
+        playerName: $("player-name").textContent,
+        xp,
+        defeated,
+        completedBattleQuestions,
+        unlockedBattleLevels,
+        unlockedSkillLevels,
+        completedSkills: [...completedSkills],
+        rewardedExercises: [...rewardedExercises],
+        bonusBadgeAwarded
+      };
+      try {
+        localStorage.setItem(progressStorageKey, JSON.stringify(progress));
+        $("storage-status").textContent = "";
+        $("storage-status").classList.add("hidden");
+      } catch (error) {
+        console.error("Could not save EnglishLite progress.", error);
+        $("storage-status").textContent = "Progress could not be saved in this browser. You can keep playing, but it may not be here next time.";
+        $("storage-status").classList.remove("hidden");
+      }
+    }
+    function restoreProgress() {
+      try {
+        const saved = localStorage.getItem(progressStorageKey);
+        if (!saved) return false;
+        const progress = JSON.parse(saved);
+        if (!progress || typeof progress !== "object" || Array.isArray(progress)) {
+          throw new Error("Saved progress has an invalid format.");
+        }
+        if (typeof progress.playerName === "string" && progress.playerName.trim()) {
+          $("player-name").textContent = progress.playerName.slice(0, 40);
+        }
+        if (Number.isSafeInteger(progress.xp) && progress.xp >= 0) xp = progress.xp;
+        if (Number.isSafeInteger(progress.defeated) && progress.defeated >= 0) defeated = progress.defeated;
+        for (const [world, levels] of Object.entries(battleWorldLevels)) {
+          const completed = progress.completedBattleQuestions?.[world];
+          const unlocked = progress.unlockedBattleLevels?.[world];
+          const total = levels.reduce((sum, level) => sum + level.questions.length, 0);
+          if (Number.isInteger(completed) && completed >= 0) completedBattleQuestions[world] = Math.min(completed, total);
+          if (Number.isInteger(unlocked) && unlocked >= 0) unlockedBattleLevels[world] = Math.min(unlocked, levels.length - 1);
+        }
+        for (const [skill, details] of Object.entries(skillContent)) {
+          const unlocked = progress.unlockedSkillLevels?.[skill];
+          if (Number.isInteger(unlocked) && unlocked >= 0) unlockedSkillLevels[skill] = Math.min(unlocked, details.levels.length - 1);
+        }
+        if (Array.isArray(progress.completedSkills)) {
+          progress.completedSkills.filter((skill) => Object.hasOwn(skillContent, skill)).forEach((skill) => completedSkills.add(skill));
+        }
+        if (Array.isArray(progress.rewardedExercises)) {
+          for (const key of progress.rewardedExercises) {
+            if (typeof key !== "string") continue;
+            const [skill, levelText, exerciseText] = key.split(":");
+            const level = Number(levelText);
+            const exercise = Number(exerciseText);
+            if (skillContent[skill]?.levels[level]?.exercises[exercise]) rewardedExercises.add(key);
+          }
+        }
+        bonusBadgeAwarded = progress.bonusBadgeAwarded === true;
+        return true;
+      } catch (error) {
+        console.error("Could not restore EnglishLite progress.", error);
+        $("storage-status").textContent = "Saved progress could not be read. You can still start a new demo.";
+        $("storage-status").classList.remove("hidden");
+        return false;
+      }
+    }
+    function renderSavedProgress() {
+      setXp(xp);
+      $("quest-count").textContent = String(Math.min(defeated + 3, 5));
+      $("quest-bar").style.width = `${Math.min((defeated + 3) * 20, 100)}%`;
+      for (const world of Object.keys(battleWorldLevels)) updateBattleWorldProgress(world);
+      for (const [skill, details] of Object.entries(skillContent)) {
+        const status = $(`${skill}-status`);
+        const card = document.querySelector(`[data-skill="${skill}"]`);
+        if (completedSkills.has(skill)) {
+          status.textContent = "✓ C2 mastered";
+          card.classList.add("completed");
+        } else if (unlockedSkillLevels[skill] > 0) {
+          const completedLevel = details.levels[unlockedSkillLevels[skill] - 1];
+          status.textContent = `${completedLevel.code} complete · ${details.levels[unlockedSkillLevels[skill]].code} unlocked`;
+        }
+      }
+      const completed = completedSkills.size;
+      $("badge-progress").textContent = completed === 4 ? "Badge earned!" : `${completed} / 4 skills`;
+      if (bonusBadgeAwarded) {
+        $("bonus-badge").classList.add("unlocked");
+        $("badge-title").textContent = "Bonus badge unlocked · Skill Star!";
+        $("badge-description").textContent = "You practiced listening, reading, writing, and speaking. Amazing work!";
+      }
+    }
+    $("demo-login").addEventListener("click", () => {
+      $("player-name").textContent = "word hero";
+      saveProgress();
+      showDashboard();
+    });
+    $("reset-demo").addEventListener("click", () => {
+      if (!window.confirm("Start a fresh demo? This clears progress saved in this browser.")) return;
+      try {
+        localStorage.removeItem(progressStorageKey);
+      } catch (error) {
+        console.error("Could not clear EnglishLite progress.", error);
+        $("storage-status").textContent = "Progress could not be cleared in this browser.";
+        $("storage-status").classList.remove("hidden");
+        return;
+      }
+      location.reload();
+    });
+    $("continue-btn").addEventListener("click", () => startBattle("Wordwood Forest"));
+    document.querySelectorAll(".world-card:not(:disabled)").forEach((card) => card.addEventListener("click", () => startBattle(card.dataset.world)));
+    document.querySelectorAll(".skill-card").forEach((card) => card.addEventListener("click", () => openSkill(card.dataset.skill)));
+    $("return-action").addEventListener("click", returnToPrevious);
+    $("skill-back-btn").addEventListener("click", returnToPrevious);
+    $("world-link").addEventListener("click", () => {
+      document.querySelector(".world-grid").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    $("back-btn").addEventListener("click", returnToPrevious);
+    $("return-btn").addEventListener("click", () => {
+      if (activeBattleLevel < unlockedBattleLevels[worldName]) {
+        startBattle(worldName, false);
+        return;
+      }
+      returnToPrevious();
+    });
+    $("download-app").addEventListener("click", (event) => {
+      event.preventDefault();
+      const copy = document.documentElement.cloneNode(true);
+      copy.querySelector("#auth-view").classList.remove("hidden");
+      copy.querySelector("#dashboard-view").classList.add("hidden");
+      copy.querySelector("#skill-view").classList.add("hidden");
+      copy.querySelector("#battle-view").classList.add("hidden");
+      copy.querySelector("#complete-card").classList.add("hidden");
+      copy.querySelector("#player-actions").classList.add("hidden");
+      copy.querySelector("#return-action").classList.add("hidden");
+      copy.querySelector("#xp-count").textContent = "120";
+      copy.querySelector("#heart-count").textContent = "5";
+      copy.querySelector("#wordwood-progress-count").textContent = "A1 · 0 / 13";
+      copy.querySelector("#grammar-progress-count").textContent = "A1 · 0 / 12";
+      copy.querySelector("#hunter-progress-count").textContent = "A1 · 0 / 12";
+      copy.querySelector("#wordwood-world-state").textContent = "● A1 unlocked";
+      copy.querySelector("#grammar-world-state").textContent = "● A1 unlocked";
+      copy.querySelector("#hunter-world-state").textContent = "● A1 unlocked";
+      copy.querySelector("#wordwood-progress-fill").style.width = "0%";
+      copy.querySelector("#grammar-progress-fill").style.width = "0%";
+      copy.querySelector("#hunter-progress-fill").style.width = "0%";
+      copy.querySelectorAll(".skill-card").forEach((card) => card.classList.remove("completed"));
+      copy.querySelectorAll(".skill-status").forEach((status) => { status.textContent = "Start at A1 →"; });
+      copy.querySelector("#bonus-badge").classList.remove("unlocked");
+      copy.querySelector("#badge-title").textContent = "Bonus badge · Skill Star";
+      copy.querySelector("#badge-description").textContent = "Complete all four skill practices to earn your badge.";
+      copy.querySelector("#badge-progress").textContent = "0 / 4 skills";
+      copy.querySelector("#quest-count").textContent = "3";
+      copy.querySelector("#quest-bar").style.width = "60%";
+      const blob = new Blob([`<!doctype html>\n${copy.outerHTML}`], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "EnglishLite.html";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+    $("answer-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (awaitingNext) {
+        if (questionIndex < activeQuestions.length - 1) {
+          questionIndex++;
+          renderQuestion();
+        } else {
+          $("battle-card").classList.add("hidden");
+          $("complete-card").classList.remove("hidden");
+          $("battle-progress-fill").style.width = "100%";
+          const completedLevel = activeBattleLevels[activeBattleLevel];
+          const isHunterWorld = worldName === "Monster Hunter Nebula";
+          if (activeBattleLevel < activeBattleLevels.length - 1) {
+            unlockedBattleLevels[worldName] = Math.max(unlockedBattleLevels[worldName], activeBattleLevel + 1);
+            const nextLevel = activeBattleLevels[unlockedBattleLevels[worldName]];
+            $("complete-title").textContent = `${completedLevel.code} ${isHunterWorld ? "hunt" : "world"} complete!`;
+            $("complete-description").textContent = `You corrected every ${completedLevel.code} monster. ${nextLevel.code} · ${nextLevel.name} is now unlocked!`;
+            $("return-btn").textContent = `Continue to ${nextLevel.code} →`;
+            updateBattleWorldProgress(worldName);
+          } else {
+            $("complete-title").textContent = isHunterWorld ? "Nebula mastered!" : `${worldName} mastered!`;
+            $("complete-description").textContent = `You completed every challenge from A1 to C2 in ${worldName}. Excellent work!`;
+            $("return-btn").textContent = "Back to your map";
+            updateBattleWorldProgress(worldName);
+          }
+        }
+        saveProgress();
+        return;
+      }
+      const answer = $("answer-input").value.trim().toLowerCase().replace(/\s+/g, " ");
+      const question = activeQuestions[questionIndex];
+      const correct = question.answer.toLowerCase();
+      if (answer !== correct) {
+        $("feedback").textContent = "Not quite — try again! Hint: " + question.hint;
+        $("feedback").className = "feedback bad";
+        $("answer-input").focus();
+        return;
+      }
+      $("feedback").textContent = `Nice one! Monster defeated. +${battleXpReward} XP ✨`;
+      $("feedback").className = "feedback good";
+      setXp(xp + battleXpReward);
+      defeated++;
+      $("quest-count").textContent = String(Math.min(defeated + 3, 5));
+      $("quest-bar").style.width = `${Math.min((defeated + 3) * 20, 100)}%`;
+      const totalWorldQuestions = activeBattleLevels.reduce((sum, level) => sum + level.questions.length, 0);
+      completedBattleQuestions[worldName] = Math.min(completedBattleQuestions[worldName] + 1, totalWorldQuestions);
+      updateBattleWorldProgress(worldName);
+      $("answer-input").disabled = true;
+      $("answer-form").querySelector("button").textContent = questionIndex < activeQuestions.length - 1
+        ? "Next monster →"
+        : worldName === "Monster Hunter Nebula" ? "Complete the hunt →" : "Complete this level →";
+      awaitingNext = true;
+      saveProgress();
+    });
+    $("adventure-date").textContent = new Date().toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "long",
+      day: "numeric"
+    });
+    if (restoreProgress()) {
+      renderSavedProgress();
+      appRoutes[0] = { view: "dashboard-view" };
+      history.replaceState({ englishLiteRoute: true, routeIndex: 0 }, "", location.href);
+      showDashboard(false);
+    }
+  </script>
+
+
+</body></html>
